@@ -32,10 +32,10 @@ class ProfilePage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: signUserOut,
-        backgroundColor: Colors.redAccent,
+        backgroundColor: Colors.amber,
         child: const Icon(
           Icons.logout,
-          color: Colors.white,
+          color: Colors.black,
         ), // You can change the color
       ),
       floatingActionButtonLocation:

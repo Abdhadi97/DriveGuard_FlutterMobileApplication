@@ -48,6 +48,7 @@ dependencies:
   smooth_page_indicator: ^1.1.0
   iconsax: ^0.0.8
   line_awesome_flutter: ^2.0.0
+  google_maps_flutter: ^2.6.1
   
 
 dev_dependencies:
