@@ -14,17 +14,17 @@ class _HomePapeState extends State<HomePage> {
   final user = FirebaseAuth.instance.currentUser!;
   int currentPageIndex = 0;
 
-  /* sign user out method
+  //sign user out method
   void signUserOut() {
     FirebaseAuth.instance.signOut();
-  }*/
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      /*appBar: AppBar(
+      appBar: AppBar(
         backgroundColor: Colors.black,
-        title: ,
+        title: const Text("DriveGuard"),
         actions: [
           IconButton(
             onPressed: signUserOut,
@@ -32,7 +32,7 @@ class _HomePapeState extends State<HomePage> {
             color: Colors.white,
           )
         ],
-      ),*/
+      ),
       body: _getBody(currentPageIndex),
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (int index) {
