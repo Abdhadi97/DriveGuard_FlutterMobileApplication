@@ -3,14 +3,14 @@ import 'package:drive_guard/pages/profile_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatefulWidget {
-  HomePage({Key? key}) : super(key: key);
+class HomePape extends StatefulWidget {
+  HomePape({Key? key}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePapeState();
+  State<HomePape> createState() => _HomePapeState();
 }
 
-class _HomePapeState extends State<HomePage> {
+class _HomePapeState extends State<HomePape> {
   final user = FirebaseAuth.instance.currentUser!;
   int currentPageIndex = 0;
 
