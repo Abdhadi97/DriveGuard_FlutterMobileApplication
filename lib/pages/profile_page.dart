@@ -9,7 +9,6 @@ class ProfilePage extends StatelessWidget {
     FirebaseAuth.instance.signOut();
   }
 
-//puey power batang keras macam besi
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
