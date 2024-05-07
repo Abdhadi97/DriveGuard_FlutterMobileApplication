@@ -1,4 +1,4 @@
-# drive_guard
+# DriveGuard: A Mobile Application for Vehicle Breakdown Assistance using GPS Technology
 
 A new Flutter project.
 
