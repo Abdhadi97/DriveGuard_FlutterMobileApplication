@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:drive_guard/pages/auth_page.dart';
+import 'package:drive_guard/controllers/auth_session.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iconsax/iconsax.dart';
@@ -35,7 +35,7 @@ class _SplashScreenState extends State<SplashScreen>
     Timer(const Duration(seconds: 3), () {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (_) => const AuthPage(),
+          builder: (_) => const AuthSession(),
         ),
       );
     });

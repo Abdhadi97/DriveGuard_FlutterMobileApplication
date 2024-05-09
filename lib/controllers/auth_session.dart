@@ -3,8 +3,8 @@ import 'package:drive_guard/pages/login_or_register.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class AuthPage extends StatelessWidget {
-  const AuthPage({super.key});
+class AuthSession extends StatelessWidget {
+  const AuthSession({super.key});
 
   @override
   Widget build(BuildContext context) {
