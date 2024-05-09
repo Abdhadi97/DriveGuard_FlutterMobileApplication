@@ -46,9 +46,11 @@ dependencies:
   # --GEOLOCATION
   geocoding: ^3.0.0
   geolocator: ^11.0.0
+  google_maps_flutter: ^2.6.1
 
   # --OTHERS
   smooth_page_indicator: ^1.1.0
+  
   
   
   

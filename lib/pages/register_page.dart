@@ -1,7 +1,8 @@
+import 'package:drive_guard/components/my_textfield_firstName.dart';
+import 'package:drive_guard/components/my_textfield_lastName.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:drive_guard/components/my_textfield.dart';
-import 'package:drive_guard/components/square_tile.dart';
 
 class RegisterPage extends StatefulWidget {
   final Function()? onTap;
@@ -16,10 +17,14 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  final fNameController = TextEditingController();
+  final lNameController = TextEditingController();
+  final phoneController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
   bool _obscureText = true;
+  bool _obscureText1 = true;
 
   void signUserUp() async {
     // Check if passwords match
@@ -81,7 +86,7 @@ class _RegisterPageState extends State<RegisterPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height: 25),
+                //register icon
                 const Icon(
                   Icons.person,
                   size: 100,
@@ -94,13 +99,60 @@ class _RegisterPageState extends State<RegisterPage> {
                     fontSize: 16,
                   ),
                 ),
+
                 const SizedBox(height: 25),
+
+                //fullname input text
+                Row(
+                  children: [
+                    Expanded(
+                      child: MyTextFieldFirstName(
+                        controller: fNameController,
+                        hintText: 'First Name',
+                        obsecureText: false,
+                      ),
+                    ),
+                    Expanded(
+                      child: MyTextFieldLastName(
+                        controller: lNameController,
+                        hintText: 'Last Name',
+                        obsecureText: false,
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 10),
+
+                //email input textfield
                 MyTextField(
                   controller: emailController,
                   hintText: 'E-mail Address',
                   obsecureText: false,
                 ),
+
                 const SizedBox(height: 10),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
+                  child: TextFormField(
+                    controller: phoneController,
+                    decoration: InputDecoration(
+                      enabledBorder: const OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey.shade400),
+                      ),
+                      fillColor: Colors.grey.shade200,
+                      filled: true,
+                      hintStyle: TextStyle(color: Colors.grey[500]),
+                      hintText: 'Phone Number',
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+
+                //password input textfield
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: TextFormField(
@@ -133,12 +185,15 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
                 ),
+
                 const SizedBox(height: 10),
+
+                //confirm pass input textfield
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: TextFormField(
                     controller: confirmPasswordController,
-                    obscureText: _obscureText,
+                    obscureText: _obscureText1,
                     decoration: InputDecoration(
                       enabledBorder: const OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.white),
@@ -152,21 +207,24 @@ class _RegisterPageState extends State<RegisterPage> {
                       hintText: 'Confirm Password',
                       suffixIcon: IconButton(
                         icon: Icon(
-                          _obscureText
+                          _obscureText1
                               ? Icons.visibility
                               : Icons.visibility_off,
                           color: Colors.grey,
                         ),
                         onPressed: () {
                           setState(() {
-                            _obscureText = !_obscureText;
+                            _obscureText1 = !_obscureText1;
                           });
                         },
                       ),
                     ),
                   ),
                 ),
+
                 const SizedBox(height: 30),
+
+                //sign up button
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: ElevatedButton(
@@ -186,7 +244,8 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 30),
+
+                /*const SizedBox(height: 30),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: Row(
@@ -221,8 +280,8 @@ class _RegisterPageState extends State<RegisterPage> {
                     SizedBox(width: 25),
                     SquareTile(imagePath: 'lib/images/twitter.png')
                   ],
-                ),
-                const SizedBox(height: 50),
+                ),*/
+                const SizedBox(height: 25),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
