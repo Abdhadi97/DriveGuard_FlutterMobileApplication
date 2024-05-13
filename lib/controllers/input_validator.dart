@@ -1,8 +1,8 @@
-class InputValidtor {
+class InputValidator {
   //validate firstname
   String? validateFirstName(String? value) {
     if (value == null || value.isEmpty) {
-      return "Please enter your first name";
+      return "Please fill details";
     }
     return null;
   }
@@ -10,7 +10,7 @@ class InputValidtor {
   //validate lastname
   String? validateLastName(String? value) {
     if (value == null || value.isEmpty) {
-      return "Please enter your last name";
+      return "Please fill details";
     }
     return null;
   }
@@ -38,6 +38,25 @@ class InputValidtor {
   String? validatePassword(String? value) {
     if (value == null || value.isEmpty) {
       return "Please enter a password";
+    }
+    return null;
+  }
+
+  // Validate phone number
+  String? validatePhoneNumber(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Please enter a phone number";
+    }
+
+    // Regular expression pattern for validating phone numbers
+    RegExp phoneRegExp = RegExp(
+      r'^\+?0?\d{10,12}$',
+      caseSensitive: false,
+      multiLine: false,
+    );
+
+    if (!phoneRegExp.hasMatch(value)) {
+      return "Please enter a valid phone number";
     }
     return null;
   }
