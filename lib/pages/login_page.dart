@@ -24,6 +24,7 @@ class _LoginPageState extends State<LoginPage> {
   final AuthService _authService = AuthService();
   bool _obscureText = true;
   bool _isLoader = false;
+  var inputValidator = InputValidator();
 
   void _togglePasswordVisibility() {
     setState(() {
@@ -76,7 +77,6 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  var inputValidator = InputValidator();
   @override
   Widget build(BuildContext context) {
     return Scaffold(

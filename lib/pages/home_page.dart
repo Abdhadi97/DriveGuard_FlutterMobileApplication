@@ -4,13 +4,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({Key? key}) : super(key: key);
+  const HomePage({Key? key}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePapeState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePapeState extends State<HomePage> {
+class _HomePageState extends State<HomePage> {
   final user = FirebaseAuth.instance.currentUser!;
   int currentPageIndex = 0;
 
