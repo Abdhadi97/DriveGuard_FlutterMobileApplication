@@ -1,4 +1,6 @@
 import 'package:drive_guard/components/splash_screen.dart';
+import 'package:drive_guard/pages/location_test.dart';
+import 'package:drive_guard/pages/map_test.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
