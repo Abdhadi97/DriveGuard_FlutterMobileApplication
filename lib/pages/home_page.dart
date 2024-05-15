@@ -1,4 +1,5 @@
 import 'package:drive_guard/pages/location_test.dart';
+import 'package:drive_guard/pages/login_page.dart';
 import 'package:drive_guard/pages/profile_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,12 @@ class _HomePageState extends State<HomePage> {
   //sign user out method
   void signUserOut() {
     FirebaseAuth.instance.signOut();
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const LoginPage(),
+      ),
+    );
   }
 
   @override

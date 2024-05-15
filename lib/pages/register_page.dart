@@ -1,3 +1,4 @@
+import 'package:drive_guard/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:drive_guard/controllers/auth_service.dart';
 import 'package:drive_guard/controllers/input_validator.dart';
@@ -5,11 +6,8 @@ import 'package:drive_guard/pages/login_page.dart';
 import 'package:iconsax/iconsax.dart';
 
 class RegisterPage extends StatefulWidget {
-  final Function()? onTap;
-
   const RegisterPage({
     Key? key,
-    required this.onTap,
   }) : super(key: key);
 
   @override
@@ -61,9 +59,7 @@ class _RegisterPageState extends State<RegisterPage> {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => LoginPage(
-                onTap: () {},
-              ),
+              builder: (context) => const HomePage(),
             ),
           );
         });
@@ -78,7 +74,14 @@ class _RegisterPageState extends State<RegisterPage> {
   void _showSnackBar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(message),
+        content: Text(
+          message,
+          style: const TextStyle(
+            color: Colors.white,
+          ),
+        ),
+        showCloseIcon: true,
+        closeIconColor: Colors.white,
         backgroundColor: Colors.red,
         duration: const Duration(seconds: 3),
       ),
@@ -101,24 +104,25 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: Colors.grey[300],
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
             child: Form(
               key: _formKey,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   const Icon(
                     Icons.person,
                     size: 100,
+                    color: Colors.white,
                   ),
                   const SizedBox(height: 10),
-                  Text(
+                  const Text(
                     'Let\'s create an account for you!',
                     style: TextStyle(
-                      color: Colors.grey[700],
+                      color: Colors.white70,
                       fontSize: 16,
                     ),
                   ),
@@ -134,24 +138,10 @@ class _RegisterPageState extends State<RegisterPage> {
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             validator: _inputValidator.validateFirstName,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               hintText: 'First Name',
-                              hintStyle: TextStyle(color: Colors.grey[500]),
-                              fillColor: Colors.grey.shade200,
-                              filled: true,
-                              prefixIcon: const Icon(
+                              prefixIcon: Icon(
                                 Iconsax.personalcard,
-                                color: Colors.black,
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide:
-                                    const BorderSide(color: Colors.white),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide:
-                                    BorderSide(color: Colors.grey.shade400),
                               ),
                             ),
                           ),
@@ -167,24 +157,10 @@ class _RegisterPageState extends State<RegisterPage> {
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             validator: _inputValidator.validateLastName,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               hintText: 'Last Name',
-                              hintStyle: TextStyle(color: Colors.grey[500]),
-                              fillColor: Colors.grey.shade200,
-                              filled: true,
-                              prefixIcon: const Icon(
+                              prefixIcon: Icon(
                                 Iconsax.security_user,
-                                color: Colors.black,
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide:
-                                    const BorderSide(color: Colors.white),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide:
-                                    BorderSide(color: Colors.grey.shade400),
                               ),
                             ),
                           ),
@@ -200,22 +176,10 @@ class _RegisterPageState extends State<RegisterPage> {
                       keyboardType: TextInputType.emailAddress,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       validator: _inputValidator.validateEmail,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         hintText: 'Email Address',
-                        hintStyle: TextStyle(color: Colors.grey[500]),
-                        fillColor: Colors.grey.shade200,
-                        filled: true,
-                        prefixIcon: const Icon(
+                        prefixIcon: Icon(
                           Icons.email_outlined,
-                          color: Colors.black,
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(color: Colors.white),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(color: Colors.grey.shade400),
                         ),
                       ),
                     ),
@@ -228,22 +192,10 @@ class _RegisterPageState extends State<RegisterPage> {
                       keyboardType: TextInputType.phone,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       validator: _inputValidator.validatePhoneNumber,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         hintText: 'Phone Number',
-                        hintStyle: TextStyle(color: Colors.grey[500]),
-                        fillColor: Colors.grey.shade200,
-                        filled: true,
-                        prefixIcon: const Icon(
+                        prefixIcon: Icon(
                           Icons.phone_outlined,
-                          color: Colors.black,
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(color: Colors.white),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(color: Colors.grey.shade400),
                         ),
                       ),
                     ),
@@ -259,27 +211,14 @@ class _RegisterPageState extends State<RegisterPage> {
                       validator: _inputValidator.validatePassword,
                       decoration: InputDecoration(
                         hintText: 'Password',
-                        hintStyle: TextStyle(color: Colors.grey[500]),
-                        fillColor: Colors.grey.shade200,
-                        filled: true,
                         prefixIcon: const Icon(
                           Icons.password_outlined,
-                          color: Colors.black,
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(color: Colors.white),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(color: Colors.grey.shade400),
                         ),
                         suffixIcon: IconButton(
                           icon: Icon(
                             _obscureText
-                                ? Icons.visibility
-                                : Icons.visibility_off,
-                            color: Colors.grey,
+                                ? Icons.visibility_off
+                                : Icons.visibility,
                           ),
                           onPressed: _togglePasswordVisibility,
                         ),
@@ -296,79 +235,76 @@ class _RegisterPageState extends State<RegisterPage> {
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       validator: _inputValidator.validatePassword,
                       decoration: InputDecoration(
-                        hintText: 'Password Confirmation',
-                        hintStyle: TextStyle(color: Colors.grey[500]),
-                        fillColor: Colors.grey.shade200,
-                        filled: true,
+                        hintText: 'Confirm Password',
                         prefixIcon: const Icon(
-                          Icons.check,
-                          color: Colors.black,
-                        ),
-                        enabledBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey.shade400),
+                          Icons.password_outlined,
                         ),
                         suffixIcon: IconButton(
                           icon: Icon(
                             _obscureText1
-                                ? Icons.visibility
-                                : Icons.visibility_off,
-                            color: Colors.grey,
+                                ? Icons.visibility_off
+                                : Icons.visibility,
                           ),
                           onPressed: _toggleConfirmPasswordVisibility,
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 25),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25.0),
                     child: ElevatedButton(
-                      onPressed: _isLoader
-                          ? null
-                          : () {
-                              _submitForm(context);
-                            },
+                      onPressed: () => _submitForm(context),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.black,
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
                         minimumSize: const Size.fromHeight(50),
                       ),
                       child: _isLoader
-                          ? const Center(child: CircularProgressIndicator())
+                          ? const CircularProgressIndicator(
+                              color: Colors.white,
+                            )
                           : const Text(
-                              'SIGN UP',
+                              'REGISTER',
                               style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold),
+                                fontWeight: FontWeight.w900,
+                                fontSize: 15,
+                              ),
                             ),
                     ),
                   ),
-                  const SizedBox(height: 25),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Already have an account?',
-                        style: TextStyle(color: Colors.grey[700]),
+                  const SizedBox(height: 20),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                    child: Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            'Already have an account?',
+                            style: TextStyle(color: Colors.white70),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const LoginPage(),
+                                ),
+                              );
+                            },
+                            child: const Text(
+                              ' Login here',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      const SizedBox(width: 4),
-                      GestureDetector(
-                        onTap: widget.onTap,
-                        child: const Text(
-                          'Login now',
-                          style: TextStyle(
-                              color: Colors.blue, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ],
-                  )
+                    ),
+                  ),
+                  const SizedBox(height: 20),
                 ],
               ),
             ),

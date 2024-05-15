@@ -1,16 +1,14 @@
-import 'package:drive_guard/components/splash_screen.dart';
 import 'package:drive_guard/components/square_tile.dart';
 import 'package:drive_guard/controllers/auth_service.dart';
 import 'package:drive_guard/controllers/input_validator.dart';
 import 'package:drive_guard/controllers/reset_password.dart';
+import 'package:drive_guard/pages/home_page.dart';
+import 'package:drive_guard/pages/register_page.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
-  final Function()? onTap;
-
   const LoginPage({
     Key? key,
-    required this.onTap,
   }) : super(key: key);
 
   @override
@@ -51,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
               context,
               PageRouteBuilder(
                 transitionDuration: const Duration(milliseconds: 500),
-                pageBuilder: (_, __, ___) => const SplashScreen(),
+                pageBuilder: (_, __, ___) => const HomePage(),
                 transitionsBuilder: (_, animation, __, child) {
                   const begin = Offset(0.0, 1.0);
                   const end = Offset.zero;
@@ -71,16 +69,19 @@ class _LoginPageState extends State<LoginPage> {
         });
       });
 
-      setState(() {
-        _isLoader = false;
-      });
+      // Check if widget is mounted before calling setState
+      if (mounted) {
+        setState(() {
+          _isLoader = false;
+        });
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -93,12 +94,13 @@ class _LoginPageState extends State<LoginPage> {
                   const Icon(
                     Icons.lock_person,
                     size: 100,
+                    color: Colors.white,
                   ),
                   const SizedBox(height: 20),
-                  Text(
+                  const Text(
                     'Welcome back you\'ve been missed!',
                     style: TextStyle(
-                      color: Colors.grey[700],
+                      color: Colors.white70,
                       fontSize: 16,
                     ),
                   ),
@@ -110,22 +112,10 @@ class _LoginPageState extends State<LoginPage> {
                       keyboardType: TextInputType.emailAddress,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       validator: inputValidator.validateEmail,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         hintText: 'Email Address',
-                        hintStyle: TextStyle(color: Colors.grey[500]),
-                        fillColor: Colors.grey.shade200,
-                        filled: true,
-                        prefixIcon: const Icon(
+                        prefixIcon: Icon(
                           Icons.email_outlined,
-                          color: Colors.black,
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(color: Colors.white),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(color: Colors.grey.shade400),
                         ),
                       ),
                     ),
@@ -141,20 +131,8 @@ class _LoginPageState extends State<LoginPage> {
                       validator: inputValidator.validatePassword,
                       decoration: InputDecoration(
                         hintText: 'Password',
-                        hintStyle: TextStyle(color: Colors.grey[500]),
-                        fillColor: Colors.grey.shade200,
-                        filled: true,
                         prefixIcon: const Icon(
                           Icons.lock_outline,
-                          color: Colors.black,
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(color: Colors.white),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(color: Colors.grey.shade400),
                         ),
                         suffixIcon: IconButton(
                           icon: Icon(
@@ -186,7 +164,7 @@ class _LoginPageState extends State<LoginPage> {
                           child: const Text(
                             'Forgot Password?',
                             style: TextStyle(
-                              color: Colors.blue,
+                              color: Colors.white,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -195,13 +173,13 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   const SizedBox(height: 25),
+
+                  // Sign In Button
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25.0),
                     child: ElevatedButton(
                       onPressed: _isLoader ? null : _submitForm,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.black,
-                        foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
@@ -212,9 +190,8 @@ class _LoginPageState extends State<LoginPage> {
                           : const Text(
                               "SIGN IN",
                               style: TextStyle(
-                                color: Colors.white,
                                 fontSize: 15,
-                                fontWeight: FontWeight.bold,
+                                fontWeight: FontWeight.w900,
                               ),
                             ),
                     ),
@@ -227,20 +204,23 @@ class _LoginPageState extends State<LoginPage> {
                         Expanded(
                           child: Divider(
                             thickness: 0.5,
-                            color: Colors.grey[400],
+                            color: Colors.grey[500],
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 10.0),
                           child: Text(
                             'Or continue with',
-                            style: TextStyle(color: Colors.grey[700]),
+                            style: TextStyle(
+                              color: Colors.grey,
+                              letterSpacing: 2,
+                            ),
                           ),
                         ),
                         Expanded(
                           child: Divider(
                             thickness: 0.5,
-                            color: Colors.grey[400],
+                            color: Colors.grey[500],
                           ),
                         ),
                       ],
@@ -259,17 +239,29 @@ class _LoginPageState extends State<LoginPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
+                      const Text(
                         'Not a member?',
-                        style: TextStyle(color: Colors.grey[700]),
+                        style: TextStyle(
+                          color: Colors.grey,
+                          letterSpacing: 1,
+                        ),
                       ),
                       const SizedBox(width: 4),
                       GestureDetector(
-                        onTap: widget.onTap,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const RegisterPage(),
+                            ),
+                          );
+                        },
                         child: const Text(
                           'Register now',
                           style: TextStyle(
-                              color: Colors.blue, fontWeight: FontWeight.bold),
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ],
