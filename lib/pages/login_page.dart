@@ -24,12 +24,14 @@ class _LoginPageState extends State<LoginPage> {
   bool _isLoader = false;
   var inputValidator = InputValidator();
 
+  // SHOW/HIDE PASSWORD
   void _togglePasswordVisibility() {
     setState(() {
       _obscureText = !_obscureText;
     });
   }
 
+  // USER LOGIN METHOD
   Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
       setState(() {
@@ -90,21 +92,23 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const SizedBox(height: 25),
+                  //ICON OR LOGO OF APP
                   const Icon(
                     Icons.lock_person,
                     size: 100,
-                    color: Colors.white,
                   ),
                   const SizedBox(height: 20),
+
+                  //WELCOME TEXT
                   const Text(
                     'Welcome back you\'ve been missed!',
                     style: TextStyle(
-                      color: Colors.white70,
                       fontSize: 16,
                     ),
                   ),
                   const SizedBox(height: 25),
+
+                  //EMAIL INPUT TEXTFIELD
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25),
                     child: TextFormField(
@@ -121,6 +125,8 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   const SizedBox(height: 10),
+
+                  //PASSWORD INPUT TEXTFIELD
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25.0),
                     child: TextFormField(
@@ -139,7 +145,6 @@ class _LoginPageState extends State<LoginPage> {
                             _obscureText
                                 ? Icons.visibility
                                 : Icons.visibility_off,
-                            color: Colors.grey,
                           ),
                           onPressed: _togglePasswordVisibility,
                         ),
@@ -147,6 +152,8 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   const SizedBox(height: 10),
+
+                  //FORGOT PASSWORD
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25.0),
                     child: Row(
@@ -164,7 +171,7 @@ class _LoginPageState extends State<LoginPage> {
                           child: const Text(
                             'Forgot Password?',
                             style: TextStyle(
-                              color: Colors.white,
+                              color: Colors.blue,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -174,7 +181,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   const SizedBox(height: 25),
 
-                  // Sign In Button
+                  // SIGN IN BUTTON
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25.0),
                     child: ElevatedButton(
@@ -197,22 +204,24 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   const SizedBox(height: 25),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
+
+                  //DIVIDER, TEXT, DIVIDER
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 25.0),
                     child: Row(
                       children: [
                         Expanded(
                           child: Divider(
                             thickness: 0.5,
-                            color: Colors.grey[500],
+                            color: Colors.blueGrey,
                           ),
                         ),
-                        const Padding(
+                        Padding(
                           padding: EdgeInsets.symmetric(horizontal: 10.0),
                           child: Text(
                             'Or continue with',
                             style: TextStyle(
-                              color: Colors.grey,
+                              color: Colors.blueGrey,
                               letterSpacing: 2,
                             ),
                           ),
@@ -220,13 +229,15 @@ class _LoginPageState extends State<LoginPage> {
                         Expanded(
                           child: Divider(
                             thickness: 0.5,
-                            color: Colors.grey[500],
+                            color: Colors.blueGrey,
                           ),
                         ),
                       ],
                     ),
                   ),
                   const SizedBox(height: 25),
+
+                  //OTHER SIGN IN METHOD
                   const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -236,13 +247,14 @@ class _LoginPageState extends State<LoginPage> {
                     ],
                   ),
                   const SizedBox(height: 25),
+
+                  //GO TO REGISTER PAGE BUTTON
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text(
                         'Not a member?',
                         style: TextStyle(
-                          color: Colors.grey,
                           letterSpacing: 1,
                         ),
                       ),
@@ -259,7 +271,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: const Text(
                           'Register now',
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Colors.blue,
                             fontWeight: FontWeight.bold,
                           ),
                         ),

@@ -16,7 +16,7 @@ class _HomePageState extends State<HomePage> {
   bool isOverlayVisible = false;
   double overlayHeight = 0.2; // Initial height of the overlay
 
-  //sign user out method
+  // USER SIGN OUT
   void signUserOut() {
     FirebaseAuth.instance.signOut();
     Navigator.push(
@@ -105,7 +105,7 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Stack(
         children: [
-          // Map Content
+          // GOOGLE MAP CONTENT
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
