@@ -20,6 +20,8 @@ class MapWidget extends StatelessWidget {
       ),
       markers: markers,
       onMapCreated: onMapCreated,
+      myLocationEnabled: true,
+      myLocationButtonEnabled: false,
       zoomControlsEnabled: false,
     );
   }

@@ -169,67 +169,65 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                const SizedBox(height: 20),
-                Stack(
-                  alignment: Alignment.bottomRight,
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: _profileImage != null
-                          ? CircleAvatar(
-                              radius: 50,
-                              backgroundImage: FileImage(_profileImage!),
-                            )
-                          : (_imageUrl != null
-                              ? CircleAvatar(
-                                  radius: 50,
-                                  backgroundImage: NetworkImage(_imageUrl!),
-                                )
-                              : const CircleAvatar(
-                                  radius: 50,
-                                  child: Icon(Icons.person, size: 50),
-                                )),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(height: 20),
+              Stack(
+                alignment: Alignment.bottomRight,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                    Container(
-                      decoration: const BoxDecoration(
-                        color: Colors.amber,
-                        shape: BoxShape.circle,
-                      ),
-                      child: SizedBox(
-                        width: 30,
-                        height: 30,
-                        child: IconButton(
-                          icon: const Icon(Icons.edit),
-                          iconSize: 15,
-                          color: Colors
-                              .black, // or any color you prefer for the icon
-                          onPressed: _showImageEditorModal,
-                        ),
+                    child: _profileImage != null
+                        ? CircleAvatar(
+                            radius: 50,
+                            backgroundImage: FileImage(_profileImage!),
+                          )
+                        : (_imageUrl != null
+                            ? CircleAvatar(
+                                radius: 50,
+                                backgroundImage: NetworkImage(_imageUrl!),
+                              )
+                            : const CircleAvatar(
+                                radius: 50,
+                                child: Icon(Icons.person, size: 50),
+                              )),
+                  ),
+                  Container(
+                    decoration: const BoxDecoration(
+                      color: Colors.amber,
+                      shape: BoxShape.circle,
+                    ),
+                    child: SizedBox(
+                      width: 30,
+                      height: 30,
+                      child: IconButton(
+                        icon: const Icon(Icons.edit),
+                        iconSize: 15,
+                        color: Colors
+                            .black, // or any color you prefer for the icon
+                        onPressed: _showImageEditorModal,
                       ),
                     ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (_firstName != null && _lastName != null)
-                      Text('Name: $_firstName $_lastName'),
-                    if (_email != null) Text('Email: $_email'),
-                    if (_phoneNum != null) Text('Phone: $_phoneNum'),
-                  ],
-                ),
-              ],
-            ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (_firstName != null && _lastName != null)
+                    Text('Name: $_firstName $_lastName'),
+                  if (_email != null) Text('Email: $_email'),
+                  if (_phoneNum != null) Text('Phone: $_phoneNum'),
+                ],
+              ),
+            ],
           ),
         ),
       ),

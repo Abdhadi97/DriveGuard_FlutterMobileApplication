@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drive_guard/components/map_widget.dart';
-import 'package:drive_guard/pages/location_test.dart';
 import 'package:drive_guard/pages/login_page.dart';
 import 'package:drive_guard/pages/profile_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -86,13 +85,6 @@ class _HomePageState extends State<HomePage> {
         CameraPosition(target: position, zoom: 15)));
     setState(() {
       _markers.clear();
-      _markers.add(Marker(
-        markerId: const MarkerId("userLocation"),
-        position: position,
-        infoWindow: const InfoWindow(
-          title: "Your Location",
-        ),
-      ));
     });
   }
 
@@ -181,7 +173,7 @@ class _HomePageState extends State<HomePage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const LocationTest(),
+                        builder: (context) => Container(),
                       ),
                     );
                   },
@@ -336,6 +328,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                           ),
+                          const SizedBox(height: 10),
                         ],
                       ),
                     ),
