@@ -31,14 +31,16 @@ class _RegisterPageState extends State<RegisterPage> {
   final AuthService _authService = AuthService();
   final InputValidator _inputValidator = InputValidator();
 
+  // CREATE USER METHOD
   Future<void> _submitForm(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
-      // Check if passwords match
+      // Check if passwords not match, not proceed
       if (_passwordController.text != _confirmPasswordController.text) {
         _showSnackBar(context, 'PASSWORD DOES NOT MATCH !!');
-        return; // Do not proceed further
+        return;
       }
 
+      //if match, proceed
       setState(() {
         _isLoader = true;
       });
@@ -53,8 +55,9 @@ class _RegisterPageState extends State<RegisterPage> {
             'https://firebasestorage.googleapis.com/v0/b/driveguard-c4915.appspot.com/o/defaultProfile.jpg?alt=media&token=89120c75-b0c6-47ad-acf5-e10eb6e542c7'
       };
 
+      //create user with data in input field
       await _authService.createUser(data, context, () {
-        // Delay navigation to login page
+        // Delay navigation to home page
         Future.delayed(const Duration(seconds: 1), () {
           Navigator.pushReplacement(
             context,
@@ -71,6 +74,7 @@ class _RegisterPageState extends State<RegisterPage> {
     }
   }
 
+  //REGISTER ERROR SNACKBAR
   void _showSnackBar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -88,12 +92,14 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
+  // SHOW/HIDE PASSWORD
   void _togglePasswordVisibility() {
     setState(() {
       _obscureText = !_obscureText;
     });
   }
 
+  // SHOW/HIDE CONFIRM PASSWORD
   void _toggleConfirmPasswordVisibility() {
     setState(() {
       _obscureText1 = !_obscureText1;
@@ -114,22 +120,26 @@ class _RegisterPageState extends State<RegisterPage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   const Icon(
+                    // ICON/LOGO OF THE APP
                     Icons.person,
                     size: 100,
-                    color: Colors.white,
                   ),
                   const SizedBox(height: 10),
+
+                  // CREATE ACC TEXT
                   const Text(
                     'Let\'s create an account for you!',
                     style: TextStyle(
-                      color: Colors.white70,
                       fontSize: 16,
                     ),
                   ),
                   const SizedBox(height: 25),
+
+                  //FULL NAME INPUT FIELD
                   Row(
                     children: [
                       Expanded(
+                        // first name input
                         child: Padding(
                           padding: const EdgeInsets.only(left: 25.0),
                           child: TextFormField(
@@ -148,6 +158,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                       ),
                       const SizedBox(width: 10),
+                      // last name input
                       Expanded(
                         child: Padding(
                           padding: const EdgeInsets.only(right: 25.0),
@@ -169,6 +180,8 @@ class _RegisterPageState extends State<RegisterPage> {
                     ],
                   ),
                   const SizedBox(height: 10),
+
+                  //EMAIL INPUT FIELD
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25),
                     child: TextFormField(
@@ -185,6 +198,8 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
                   const SizedBox(height: 10),
+
+                  //PHONENUM INPUT FIELD
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25),
                     child: TextFormField(
@@ -201,6 +216,8 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
                   const SizedBox(height: 10),
+
+                  //PASSWORD INPUT FIELD
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25.0),
                     child: TextFormField(
@@ -226,6 +243,8 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
                   const SizedBox(height: 10),
+
+                  //CONFIRM PASSWORD INPUT FIELD
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25.0),
                     child: TextFormField(
@@ -251,6 +270,8 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
                   const SizedBox(height: 25),
+
+                  //REGISTER BUTTON
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25.0),
                     child: ElevatedButton(
@@ -259,9 +280,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         minimumSize: const Size.fromHeight(50),
                       ),
                       child: _isLoader
-                          ? const CircularProgressIndicator(
-                              color: Colors.white,
-                            )
+                          ? const CircularProgressIndicator()
                           : const Text(
                               'REGISTER',
                               style: TextStyle(
@@ -272,6 +291,8 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
                   const SizedBox(height: 20),
+
+                  //GO TO LOGIN PAGE
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25.0),
                     child: Center(
@@ -280,7 +301,6 @@ class _RegisterPageState extends State<RegisterPage> {
                         children: [
                           const Text(
                             'Already have an account?',
-                            style: TextStyle(color: Colors.white70),
                           ),
                           GestureDetector(
                             onTap: () {
@@ -294,7 +314,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             child: const Text(
                               ' Login here',
                               style: TextStyle(
-                                color: Colors.white,
+                                color: Colors.blue,
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                               ),
