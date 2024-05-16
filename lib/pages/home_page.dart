@@ -1,8 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:drive_guard/components/map_widget.dart';
 import 'package:drive_guard/pages/location_test.dart';
 import 'package:drive_guard/pages/login_page.dart';
 import 'package:drive_guard/pages/profile_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -12,9 +16,35 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   final user = FirebaseAuth.instance.currentUser!;
   bool isOverlayVisible = false;
   double overlayHeight = 0.2; // Initial height of the overlay
+
+  String firstName = '';
+  String lastName = '';
+
+  late GoogleMapController _mapController;
+  final Set<Marker> _markers = {};
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserData();
+  }
+
+  // FETCH USER DATA
+  Future<void> fetchUserData() async {
+    DocumentSnapshot userDoc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .get();
+    setState(() {
+      firstName = userDoc['firstname'];
+      lastName = userDoc['lastname'];
+    });
+  }
 
   // USER SIGN OUT
   void signUserOut() {
@@ -27,25 +57,106 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  // Get user location; (latitude, longitude)
+  Future<void> _getUserLocation() async {
+    Position position = await Geolocator.getCurrentPosition();
+    _updateMapWithUserLocation(position.latitude, position.longitude);
+  }
+
+  // Get workshop location (latitude, longitude)
+  Future<void> _getWorkshopLocations() async {
+    QuerySnapshot workshopSnapshot =
+        await FirebaseFirestore.instance.collection('workshops').get();
+
+    for (var document in workshopSnapshot.docs) {
+      Map<String, dynamic> workshopData =
+          document.data() as Map<String, dynamic>;
+      GeoPoint location = workshopData['location'] as GeoPoint;
+      String name = workshopData['name'] as String;
+      double latitude = location.latitude;
+      double longitude = location.longitude;
+      _addWorkshopMarker(name, latitude, longitude);
+    }
+  }
+
+  // Update latest user location in map
+  void _updateMapWithUserLocation(double latitude, double longitude) {
+    LatLng position = LatLng(latitude, longitude);
+    _mapController.animateCamera(CameraUpdate.newCameraPosition(
+        CameraPosition(target: position, zoom: 15)));
+    setState(() {
+      _markers.clear();
+      _markers.add(Marker(
+        markerId: const MarkerId("userLocation"),
+        position: position,
+        infoWindow: const InfoWindow(
+          title: "Your Location",
+        ),
+      ));
+    });
+  }
+
+  // Display workshop marker in map
+  void _addWorkshopMarker(String name, double latitude, double longitude) {
+    LatLng position = LatLng(latitude, longitude);
+    _markers.add(Marker(
+      markerId: MarkerId(name),
+      position: position,
+      infoWindow: InfoWindow(
+        title: name,
+      ),
+    ));
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      key: _scaffoldKey,
+      // SIDE NAVIGATION
       drawer: Drawer(
         child: Stack(
           children: [
             ListView(
               padding: EdgeInsets.zero,
               children: [
-                const SizedBox(
-                  height: 100, // Adjust the height as needed
+                SizedBox(
+                  height: 140, // Adjust the height as needed
                   child: DrawerHeader(
-                    child: Text(
-                      'Drawer Head',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24,
-                      ),
+                    decoration: const BoxDecoration(
+                      color: Colors.blue,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey, // Shadow color
+                          spreadRadius: 2,
+                          blurRadius: 7,
+                          offset: Offset(0, 1), // changes position of shadow
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // user's name
+                        Text(
+                          '$firstName $lastName',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 24,
+                            color: Colors.white,
+                          ),
+                        ),
+                        // user's email
+                        Text(
+                          user.email!,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            letterSpacing: 0,
+                            fontStyle: FontStyle.italic,
+                            color: Colors.white70,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -94,6 +205,7 @@ class _HomePageState extends State<HomePage> {
               bottom: 20,
               right: 20,
               child: FloatingActionButton(
+                heroTag: 'signUserOut',
                 onPressed: () {
                   signUserOut();
                 },
@@ -103,18 +215,46 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
+      // Adjusted body of the HomePage widget
       body: Stack(
         children: [
           // GOOGLE MAP CONTENT
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'LOGGED IN AS: ${user.email!}',
-                  style: const TextStyle(fontSize: 16),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Center(
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.8,
+                  child: MapWidget(
+                    markers: _markers,
+                    onMapCreated: (controller) {
+                      _mapController = controller;
+                    },
+                  ),
                 ),
-              ],
+              ),
+            ],
+          ),
+
+          Positioned(
+            bottom: 240,
+            right: 15,
+            child: SizedBox(
+              height: 40,
+              width: 40,
+              child: FloatingActionButton(
+                heroTag: 'userLocation',
+                onPressed: () {
+                  _getUserLocation();
+                },
+                shape: const CircleBorder(),
+                backgroundColor: Colors.white,
+                child: const Icon(
+                  Icons.my_location,
+                  color: Colors.blue,
+                  size: 20,
+                ),
+              ),
             ),
           ),
 
@@ -183,7 +323,9 @@ class _HomePageState extends State<HomePage> {
                           SizedBox(
                             width: double.infinity,
                             child: ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                _getWorkshopLocations();
+                              },
                               child: const Text(
                                 'See Available Workshops',
                                 style: TextStyle(
@@ -198,6 +340,28 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
+                ),
+              ),
+            ),
+          ),
+
+          // Floating button to open drawer at top left
+          Positioned(
+            top: 50,
+            left: 15,
+            child: SizedBox(
+              height: 40,
+              width: 40,
+              child: FloatingActionButton(
+                heroTag: 'openDrawer',
+                onPressed: () {
+                  _scaffoldKey.currentState?.openDrawer();
+                },
+                shape: const CircleBorder(),
+                backgroundColor: Colors.white,
+                child: const Icon(
+                  Icons.menu,
+                  color: Colors.blue,
                 ),
               ),
             ),
