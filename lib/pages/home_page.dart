@@ -33,6 +33,12 @@ class _HomePageState extends State<HomePage> {
     fetchUserData();
   }
 
+  @override
+  void dispose() {
+    _mapController.dispose();
+    super.dispose();
+  }
+
   // FETCH USER DATA
   Future<void> fetchUserData() async {
     DocumentSnapshot userDoc = await FirebaseFirestore.instance
@@ -48,7 +54,7 @@ class _HomePageState extends State<HomePage> {
   // USER SIGN OUT
   void signUserOut() {
     FirebaseAuth.instance.signOut();
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) => const LoginPage(),
@@ -101,8 +107,31 @@ class _HomePageState extends State<HomePage> {
     setState(() {});
   }
 
+  void _handleDragUpdate(DragUpdateDetails details) {
+    setState(() {
+      overlayHeight -=
+          details.primaryDelta! / MediaQuery.of(context).size.height;
+      overlayHeight = overlayHeight.clamp(0.2, 0.8);
+    });
+  }
+
+  void _handleDragEnd(DragEndDetails details) {
+    setState(() {
+      if (overlayHeight <= 0.3) {
+        overlayHeight = 0.2;
+      } else if (overlayHeight <= 0.6) {
+        overlayHeight = 0.5;
+      } else {
+        overlayHeight = 0.8;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context).size;
+    final height = mediaQuery.height;
+
     return Scaffold(
       key: _scaffoldKey,
       // SIDE NAVIGATION
@@ -216,7 +245,7 @@ class _HomePageState extends State<HomePage> {
             children: [
               Center(
                 child: SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.8,
+                  height: height * 0.8,
                   child: MapWidget(
                     markers: _markers,
                     onMapCreated: (controller) {
@@ -229,7 +258,7 @@ class _HomePageState extends State<HomePage> {
           ),
 
           Positioned(
-            bottom: 240,
+            bottom: 230,
             right: 15,
             child: SizedBox(
               height: 40,
@@ -250,32 +279,37 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
 
+          // Floating action button to open drawer
+          Positioned(
+            top: 50,
+            left: 15,
+            child: SizedBox(
+              height: 40,
+              width: 40,
+              child: FloatingActionButton(
+                heroTag: 'openDrawer',
+                onPressed: () {
+                  _scaffoldKey.currentState?.openDrawer();
+                },
+                shape: const CircleBorder(),
+                backgroundColor: Colors.white,
+                child: const Icon(
+                  Icons.menu,
+                  color: Colors.blue,
+                  size: 20,
+                ),
+              ),
+            ),
+          ),
+
           // Draggable Overlay: Request page
           Positioned(
             bottom: 0,
             left: 0,
             right: 0,
             child: GestureDetector(
-              onVerticalDragUpdate: (details) {
-                setState(() {
-                  overlayHeight -= details.primaryDelta! /
-                      MediaQuery.of(context).size.height;
-                  overlayHeight = overlayHeight.clamp(
-                      0.2, 0.8); // Clamp the height between 20% and 80%
-                });
-              },
-              onVerticalDragEnd: (details) {
-                setState(() {
-                  // Snap the overlay to 80% if it's greater than 0.6
-                  if (overlayHeight <= 0.2) {
-                    overlayHeight = 0.2;
-                  } else if (overlayHeight > 0.2 && overlayHeight <= 0.5) {
-                    overlayHeight = 0.5;
-                  } else if (overlayHeight > 0.5) {
-                    overlayHeight = 0.8;
-                  }
-                });
-              },
+              onVerticalDragUpdate: _handleDragUpdate,
+              onVerticalDragEnd: _handleDragEnd,
               child: ClipRRect(
                 borderRadius: const BorderRadius.vertical(
                   top: Radius.circular(15),
@@ -333,28 +367,6 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
-                ),
-              ),
-            ),
-          ),
-
-          // Floating button to open drawer at top left
-          Positioned(
-            top: 50,
-            left: 15,
-            child: SizedBox(
-              height: 40,
-              width: 40,
-              child: FloatingActionButton(
-                heroTag: 'openDrawer',
-                onPressed: () {
-                  _scaffoldKey.currentState?.openDrawer();
-                },
-                shape: const CircleBorder(),
-                backgroundColor: Colors.white,
-                child: const Icon(
-                  Icons.menu,
-                  color: Colors.blue,
                 ),
               ),
             ),

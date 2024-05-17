@@ -6,23 +6,23 @@ class MapWidget extends StatelessWidget {
   final Function(GoogleMapController) onMapCreated;
 
   const MapWidget({
-    super.key,
+    Key? key,
     required this.markers,
     required this.onMapCreated,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GoogleMap(
       initialCameraPosition: const CameraPosition(
-        target: LatLng(4.2105, 101.9758),
+        target: LatLng(4.2105, 101.9758), // Set this to your desired location
         zoom: 7,
       ),
       markers: markers,
-      onMapCreated: onMapCreated,
+      onMapCreated: (controller) => onMapCreated(controller),
+      zoomControlsEnabled: false, // Disable the zoom controls
       myLocationEnabled: true,
       myLocationButtonEnabled: false,
-      zoomControlsEnabled: false,
     );
   }
 }
