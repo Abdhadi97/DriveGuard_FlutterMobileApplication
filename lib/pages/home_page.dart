@@ -266,6 +266,8 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
+
+      // Main content of homepage
       body: Stack(
         children: [
           Column(
@@ -284,9 +286,11 @@ class _HomePageState extends State<HomePage> {
               ),
             ],
           ),
+
+          // User location floating button
           Positioned(
             bottom: 250,
-            right: 15,
+            right: 20,
             child: SizedBox(
               height: 40,
               width: 40,
@@ -303,23 +307,31 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
+
+          // Open drawer floating button
           Positioned(
             top: 50,
-            left: 15,
-            child: FloatingActionButton(
-              heroTag: 'openDrawer',
-              onPressed: () {
-                _scaffoldKey.currentState?.openDrawer();
-              },
-              shape: const CircleBorder(),
-              backgroundColor: Colors.white,
-              child: const Icon(
-                Icons.menu,
-                color: Colors.blue,
-                size: 20,
+            left: 20,
+            child: SizedBox(
+              height: 50,
+              width: 50,
+              child: FloatingActionButton(
+                heroTag: 'openDrawer',
+                onPressed: () {
+                  _scaffoldKey.currentState?.openDrawer();
+                },
+                shape: const CircleBorder(),
+                backgroundColor: Colors.white,
+                child: const Icon(
+                  Icons.menu,
+                  color: Colors.blue,
+                  size: 25,
+                ),
               ),
             ),
           ),
+
+          // Overlay above map
           Positioned(
             bottom: 0,
             left: 0,
@@ -383,9 +395,9 @@ class _HomePageState extends State<HomePage> {
                         ),
                         Slider(
                           value: _currentRange,
-                          min: 1,
+                          min: 0,
                           max: 20, // Maximum range can be adjusted as needed
-                          divisions: 19,
+                          divisions: 10,
                           onChanged: (double value) {
                             setState(() {
                               _currentRange = value;

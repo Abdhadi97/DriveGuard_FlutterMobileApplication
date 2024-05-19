@@ -118,7 +118,23 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Profile'),
+        leading: GestureDetector(
+          child: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.white,
+          ),
+          onTap: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: const Text(
+          'My Profile',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: Colors.blue,
       ),
       body: Consumer<UserProvider>(
         builder: (context, userProvider, child) {
@@ -131,63 +147,80 @@ class _ProfilePageState extends State<ProfilePage> {
           return Center(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 20),
-                  Stack(
-                    alignment: Alignment.bottomRight,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: _profileImage != null
-                            ? CircleAvatar(
-                                radius: 50,
-                                backgroundImage: FileImage(_profileImage!),
-                              )
-                            : (user.imageUrl != null
-                                ? CircleAvatar(
-                                    radius: 50,
-                                    backgroundImage:
-                                        NetworkImage(user.imageUrl!),
-                                  )
-                                : const CircleAvatar(
-                                    radius: 50,
-                                    child: Icon(Icons.person, size: 50),
-                                  )),
+              child: Container(
+                width: double.infinity,
+                height: 500,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    border: const Border(
+                      top: BorderSide(
+                        width: 3,
+                        color: Colors.black,
                       ),
-                      Container(
-                        decoration: const BoxDecoration(
-                          color: Colors.amber,
-                          shape: BoxShape.circle,
+                      left: BorderSide(
+                        width: 7,
+                        color: Colors.black,
+                      ),
+                    ),
+                    color: Colors.blueGrey),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 20),
+                    Stack(
+                      alignment: Alignment.bottomRight,
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: _profileImage != null
+                              ? CircleAvatar(
+                                  radius: 70,
+                                  backgroundImage: FileImage(_profileImage!),
+                                )
+                              : (user.imageUrl != null
+                                  ? CircleAvatar(
+                                      radius: 70,
+                                      backgroundImage:
+                                          NetworkImage(user.imageUrl!),
+                                    )
+                                  : const CircleAvatar(
+                                      radius: 70,
+                                      child: Icon(Icons.person, size: 70),
+                                    )),
                         ),
-                        child: SizedBox(
-                          width: 30,
-                          height: 30,
-                          child: IconButton(
-                            icon: const Icon(Icons.edit),
-                            iconSize: 15,
-                            color: Colors.black,
-                            onPressed: _showImageEditorModal,
+                        Container(
+                          decoration: const BoxDecoration(
+                            color: Colors.amber,
+                            shape: BoxShape.circle,
+                          ),
+                          child: SizedBox(
+                            width: 40,
+                            height: 40,
+                            child: IconButton(
+                              icon: const Icon(Icons.edit),
+                              iconSize: 25,
+                              color: Colors.black,
+                              onPressed: _showImageEditorModal,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      if (user.firstName != null && user.lastName != null)
-                        Text('Name: ${user.firstName} ${user.lastName}'),
-                      if (user.email != null) Text('Email: ${user.email}'),
-                      if (user.phoneNum != null)
-                        Text('Phone: ${user.phoneNum}'),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (user.firstName != null && user.lastName != null)
+                          Text('Name: ${user.firstName} ${user.lastName}'),
+                        if (user.email != null) Text('Email: ${user.email}'),
+                        if (user.phoneNum != null)
+                          Text('Phone: ${user.phoneNum}'),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           );

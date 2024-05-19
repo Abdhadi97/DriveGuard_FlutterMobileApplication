@@ -9,16 +9,16 @@ class ResetPasswordPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
       body: Center(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.symmetric(horizontal: 25.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const CircleAvatar(
                 radius: 70,
                 backgroundImage: AssetImage('lib/images/google.png'),
+                backgroundColor: Colors.white,
               ),
               const SizedBox(height: 40),
               const Text(
