@@ -43,7 +43,7 @@ class _WorkshopListState extends State<WorkshopList> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.teal,
       ),
       body: FutureBuilder<List<DocumentSnapshot>>(
         future: _workshopsFuture,

@@ -175,7 +175,7 @@ class _HomePageState extends State<HomePage> {
                   height: 140, // Adjust the height as needed
                   child: DrawerHeader(
                     decoration: const BoxDecoration(
-                      color: Colors.blue,
+                      color: Colors.teal,
                       boxShadow: [
                         BoxShadow(
                           color: Colors.grey, // Shadow color
@@ -298,10 +298,8 @@ class _HomePageState extends State<HomePage> {
                 heroTag: 'userLocation',
                 onPressed: _getUserLocation,
                 shape: const CircleBorder(),
-                backgroundColor: Colors.white,
                 child: const Icon(
                   Icons.my_location,
-                  color: Colors.blue,
                   size: 20,
                 ),
               ),
@@ -321,10 +319,8 @@ class _HomePageState extends State<HomePage> {
                   _scaffoldKey.currentState?.openDrawer();
                 },
                 shape: const CircleBorder(),
-                backgroundColor: Colors.white,
                 child: const Icon(
                   Icons.menu,
-                  color: Colors.blue,
                   size: 25,
                 ),
               ),
@@ -390,7 +386,6 @@ class _HomePageState extends State<HomePage> {
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
-                            color: Colors.blue,
                           ),
                         ),
                         Slider(

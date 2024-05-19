@@ -187,9 +187,6 @@ class _LoginPageState extends State<LoginPage> {
                     child: ElevatedButton(
                       onPressed: _isLoader ? null : _submitForm,
                       style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
                         minimumSize: const Size.fromHeight(50),
                       ),
                       child: _isLoader
