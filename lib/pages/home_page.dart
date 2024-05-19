@@ -2,10 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drive_guard/components/map_widget.dart';
 import 'package:drive_guard/pages/login_page.dart';
 import 'package:drive_guard/pages/profile_page.dart';
+import 'package:drive_guard/pages/workshop_list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'dart:math' show asin, cos, pi, pow, sin, sqrt;
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -16,14 +18,11 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
   final user = FirebaseAuth.instance.currentUser!;
-  bool isOverlayVisible = false;
-  double overlayHeight = 0.2; // Initial height of the overlay
-
+  double overlayHeight = 0.3; // Initial height of the overlay
   String firstName = '';
   String lastName = '';
-
+  double _currentRange = 5;
   late GoogleMapController _mapController;
   final Set<Marker> _markers = {};
 
@@ -68,20 +67,55 @@ class _HomePageState extends State<HomePage> {
     _updateMapWithUserLocation(position.latitude, position.longitude);
   }
 
-  // Get workshop location (latitude, longitude)
+  // Calculate distance between two coordinate
+  double _calculateDistance(
+      double lat1, double lon1, double lat2, double lon2) {
+    const double radiusOfEarth = 6371; // Earth's radius in kilometers
+
+    double dLat = _degreesToRadians(lat2 - lat1);
+    double dLon = _degreesToRadians(lon2 - lon1);
+    lat1 = _degreesToRadians(lat1);
+    lat2 = _degreesToRadians(lat2);
+
+    double a =
+        pow(sin(dLat / 2), 2) + pow(sin(dLon / 2), 2) * cos(lat1) * cos(lat2);
+    double c = 2 * asin(sqrt(a));
+
+    return radiusOfEarth * c;
+  }
+
+  double _degreesToRadians(double degrees) {
+    return degrees * (pi / 180);
+  }
+
+  // Get nearby workshop location (latitude, longitude)
   Future<void> _getWorkshopLocations() async {
+    Position userPosition = await Geolocator.getCurrentPosition();
     QuerySnapshot workshopSnapshot =
         await FirebaseFirestore.instance.collection('workshops').get();
 
-    for (var document in workshopSnapshot.docs) {
-      Map<String, dynamic> workshopData =
-          document.data() as Map<String, dynamic>;
-      GeoPoint location = workshopData['location'] as GeoPoint;
-      String name = workshopData['name'] as String;
-      double latitude = location.latitude;
-      double longitude = location.longitude;
-      _addWorkshopMarker(name, latitude, longitude);
-    }
+    setState(() {
+      _markers.clear();
+      for (var document in workshopSnapshot.docs) {
+        Map<String, dynamic> workshopData =
+            document.data() as Map<String, dynamic>;
+        GeoPoint location = workshopData['location'] as GeoPoint;
+        String name = workshopData['name'] as String;
+
+        // Calculate distance between user and workshop
+        double distance = _calculateDistance(
+          userPosition.latitude,
+          userPosition.longitude,
+          location.latitude,
+          location.longitude,
+        );
+
+        // Filter workshops within specific range
+        if (distance <= _currentRange) {
+          _addWorkshopMarker(name, location.latitude, location.longitude);
+        }
+      }
+    });
   }
 
   // Update latest user location in map
@@ -104,26 +138,23 @@ class _HomePageState extends State<HomePage> {
         title: name,
       ),
     ));
-    setState(() {});
   }
 
   void _handleDragUpdate(DragUpdateDetails details) {
     setState(() {
       overlayHeight -=
           details.primaryDelta! / MediaQuery.of(context).size.height;
-      overlayHeight = overlayHeight.clamp(0.2, 0.8);
+      overlayHeight = overlayHeight.clamp(0.3, 0.8);
     });
   }
 
   void _handleDragEnd(DragEndDetails details) {
     setState(() {
-      if (overlayHeight <= 0.3) {
-        overlayHeight = 0.2;
-      } else if (overlayHeight <= 0.6) {
-        overlayHeight = 0.5;
-      } else {
-        overlayHeight = 0.8;
-      }
+      overlayHeight = overlayHeight <= 0.4
+          ? 0.3
+          : overlayHeight <= 0.6
+              ? 0.5
+              : 0.8;
     });
   }
 
@@ -134,7 +165,6 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       key: _scaffoldKey,
-      // SIDE NAVIGATION
       drawer: Drawer(
         child: Stack(
           children: [
@@ -202,7 +232,7 @@ class _HomePageState extends State<HomePage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => Container(),
+                        builder: (context) => const WorkshopList(),
                       ),
                     );
                   },
@@ -236,16 +266,14 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      // Adjusted body of the HomePage widget
       body: Stack(
         children: [
-          // GOOGLE MAP CONTENT
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Center(
                 child: SizedBox(
-                  height: height * 0.8,
+                  height: height * 0.7,
                   child: MapWidget(
                     markers: _markers,
                     onMapCreated: (controller) {
@@ -256,18 +284,15 @@ class _HomePageState extends State<HomePage> {
               ),
             ],
           ),
-
           Positioned(
-            bottom: 230,
+            bottom: 250,
             right: 15,
             child: SizedBox(
               height: 40,
               width: 40,
               child: FloatingActionButton(
                 heroTag: 'userLocation',
-                onPressed: () {
-                  _getUserLocation();
-                },
+                onPressed: _getUserLocation,
                 shape: const CircleBorder(),
                 backgroundColor: Colors.white,
                 child: const Icon(
@@ -278,31 +303,23 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-
-          // Floating action button to open drawer
           Positioned(
             top: 50,
             left: 15,
-            child: SizedBox(
-              height: 40,
-              width: 40,
-              child: FloatingActionButton(
-                heroTag: 'openDrawer',
-                onPressed: () {
-                  _scaffoldKey.currentState?.openDrawer();
-                },
-                shape: const CircleBorder(),
-                backgroundColor: Colors.white,
-                child: const Icon(
-                  Icons.menu,
-                  color: Colors.blue,
-                  size: 20,
-                ),
+            child: FloatingActionButton(
+              heroTag: 'openDrawer',
+              onPressed: () {
+                _scaffoldKey.currentState?.openDrawer();
+              },
+              shape: const CircleBorder(),
+              backgroundColor: Colors.white,
+              child: const Icon(
+                Icons.menu,
+                color: Colors.blue,
+                size: 20,
               ),
             ),
           ),
-
-          // Draggable Overlay: Request page
           Positioned(
             bottom: 0,
             left: 0,
@@ -317,54 +334,67 @@ class _HomePageState extends State<HomePage> {
                 child: Container(
                   height: MediaQuery.of(context).size.height * overlayHeight,
                   color: Colors.white,
-                  child: SingleChildScrollView(
-                    physics: overlayHeight >= 0.8
-                        ? const NeverScrollableScrollPhysics()
-                        : null,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(height: 20),
-                          const Text(
-                            'Request Assistance',
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                            ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 20),
+                        const Text(
+                          'Request Assistance',
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
                           ),
-                          const Text(
-                            'Need an Assistance? Get it with just one click.',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w400,
-                              letterSpacing: -0.5,
-                            ),
+                        ),
+                        const Text(
+                          'Need an Assistance? Get it with just one click.',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w400,
+                            letterSpacing: -0.5,
                           ),
-                          const SizedBox(height: 10),
-                          SizedBox(
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                _getWorkshopLocations();
-                              },
-                              child: const Text(
-                                'See Available Workshops',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: 0,
-                                ),
+                        ),
+                        const SizedBox(height: 10),
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: _getWorkshopLocations,
+                            child: const Text(
+                              'See Available Workshops',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 0,
                               ),
                             ),
                           ),
-                          const SizedBox(height: 10),
-                        ],
-                      ),
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          'Filter Distance Range: ${_currentRange.toStringAsFixed(1)} km',
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blue,
+                          ),
+                        ),
+                        Slider(
+                          value: _currentRange,
+                          min: 1,
+                          max: 20, // Maximum range can be adjusted as needed
+                          divisions: 19,
+                          onChanged: (double value) {
+                            setState(() {
+                              _currentRange = value;
+                              _getWorkshopLocations();
+                            });
+                          },
+                        ),
+                        const SizedBox(height: 10),
+                      ],
                     ),
                   ),
                 ),

@@ -23,6 +23,8 @@ class MapWidget extends StatelessWidget {
       zoomControlsEnabled: false, // Disable the zoom controls
       myLocationEnabled: true,
       myLocationButtonEnabled: false,
+      tiltGesturesEnabled: false,
+      compassEnabled: false,
     );
   }
 }
