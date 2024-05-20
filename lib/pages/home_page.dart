@@ -225,8 +225,8 @@ class _HomePageState extends State<HomePage> {
                   },
                 ),
                 ListTile(
-                  leading: const Icon(Icons.pin_drop),
-                  title: const Text('Location'),
+                  leading: const Icon(Icons.store),
+                  title: const Text('Workshops'),
                   onTap: () {
                     // Navigate to location page
                     Navigator.push(

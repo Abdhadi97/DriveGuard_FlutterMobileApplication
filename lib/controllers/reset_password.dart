@@ -140,7 +140,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Lottie.asset(
-                'lib/assets/success_animation.json',
+                'assets/animations/success_animation.json',
                 width: 90,
                 height: 90,
                 fit: BoxFit.fill,
@@ -178,7 +178,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Lottie.asset(
-                'lib/assets/error_animation.json',
+                'assets/animations/error_animation.json',
                 width: 90,
                 height: 90,
                 fit: BoxFit.fill,
