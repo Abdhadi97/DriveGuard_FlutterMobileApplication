@@ -250,18 +250,21 @@ class _HomePageState extends State<HomePage> {
                     );
                   },
                 ),
+                ListTile(
+                  leading: const Icon(
+                    Icons.logout_outlined,
+                    color: Colors.red,
+                  ),
+                  title: const Text(
+                    'Logout',
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  onTap: (signUserOut),
+                ),
               ],
-            ),
-            Positioned(
-              bottom: 20,
-              right: 20,
-              child: FloatingActionButton(
-                heroTag: 'signUserOut',
-                onPressed: () {
-                  signUserOut();
-                },
-                child: const Icon(Icons.logout),
-              ),
             ),
           ],
         ),

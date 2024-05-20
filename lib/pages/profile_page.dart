@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:drive_guard/providers/user_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
@@ -68,81 +69,65 @@ class _ProfilePageState extends State<ProfilePage> {
           return Center(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25.0),
-              child: Container(
-                width: double.infinity,
-                height: 500,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    border: const Border(
-                      top: BorderSide(
-                        width: 3,
-                        color: Colors.black,
-                      ),
-                      left: BorderSide(
-                        width: 7,
-                        color: Colors.black,
-                      ),
-                    ),
-                    color: Colors.blueGrey),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 20),
-                    Stack(
-                      alignment: Alignment.bottomRight,
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: _profileImage != null
-                              ? CircleAvatar(
-                                  radius: 70,
-                                  backgroundImage: FileImage(_profileImage!),
-                                )
-                              : (user.imageUrl != null
-                                  ? CircleAvatar(
-                                      radius: 70,
-                                      backgroundImage:
-                                          NetworkImage(user.imageUrl!),
-                                    )
-                                  : const CircleAvatar(
-                                      radius: 70,
-                                      child: Icon(Icons.person, size: 70),
-                                    )),
-                        ),
-                        Container(
-                          decoration: const BoxDecoration(
-                            color: Colors.amber,
-                            shape: BoxShape.circle,
-                          ),
-                          child: SizedBox(
-                            width: 40,
-                            height: 40,
-                            child: IconButton(
-                              icon: const Icon(Icons.edit),
-                              iconSize: 25,
-                              color: Colors.black,
-                              onPressed: _showImageEditorModal,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 50),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Stack(
+                        alignment: Alignment.bottomRight,
+                        children: [
+                          GestureDetector(
+                            onTap: _showImageEditorModal,
+                            child: Container(
+                              width: 120,
+                              height: 120,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                image: DecorationImage(
+                                  image: _profileImage != null
+                                      ? FileImage(_profileImage!)
+                                      : (user.imageUrl != null
+                                              ? NetworkImage(user.imageUrl!)
+                                              : const AssetImage(
+                                                  'assets/default_avatar.png'))
+                                          as ImageProvider,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
                             ),
                           ),
+                          Container(
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                            ),
+                            child: SizedBox(
+                              width: 40,
+                              height: 40,
+                              child: IconButton(
+                                icon: const Icon(Icons.edit),
+                                iconSize: 25,
+                                color: Colors.black,
+                                onPressed: _showImageEditorModal,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(width: 30),
+                      Text(
+                        '${user.firstName} ${user.lastName}',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
                         ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-
-                    // Column(
-                    //   crossAxisAlignment: CrossAxisAlignment.start,
-                    //   children: [
-                    //     if (user.firstName != null && user.lastName != null)
-                    //       Text('Name: ${user.firstName} ${user.lastName}'),
-                    //     if (user.email != null) Text('Email: ${user.email}'),
-                    //     if (user.phoneNum != null)
-                    //       Text('Phone: ${user.phoneNum}'),
-                    //   ],
-                    // ),
-                  ],
-                ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                ],
               ),
             ),
           );
@@ -151,7 +136,6 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  // Bottom sheet for image edit options
   void _showImageEditorModal() {
     showModalBottomSheet(
       context: context,

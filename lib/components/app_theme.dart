@@ -8,26 +8,30 @@ class AppTheme {
       scaffoldBackgroundColor: Colors.white,
       textTheme: const TextTheme(
         bodyLarge: TextStyle(
-            color: Colors.black,
-            fontSize: 18,
-            fontFamily: 'Roboto',
-            inherit: true),
+          color: Colors.black,
+          fontSize: 18,
+          fontFamily: 'Roboto',
+          inherit: true,
+        ),
         bodyMedium: TextStyle(
-            color: Colors.black,
-            fontSize: 16,
-            fontFamily: 'Roboto',
-            inherit: true),
+          color: Colors.black,
+          fontSize: 16,
+          fontFamily: 'Roboto',
+          inherit: true,
+        ),
         titleLarge: TextStyle(
-            color: Colors.black,
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'Roboto',
-            inherit: true),
+          color: Colors.black,
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+          fontFamily: 'Roboto',
+          inherit: true,
+        ),
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: Colors.grey[100],
         hintStyle: const TextStyle(color: Colors.grey),
+        labelStyle: const TextStyle(color: Colors.teal), // Added labelStyle
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15),
           borderSide: BorderSide(color: Colors.grey[400]!),
@@ -71,26 +75,31 @@ class AppTheme {
       scaffoldBackgroundColor: Colors.deepPurple[800],
       textTheme: const TextTheme(
         bodyLarge: TextStyle(
-            color: Colors.white,
-            fontSize: 18,
-            fontFamily: 'Roboto',
-            inherit: true),
+          color: Colors.white,
+          fontSize: 18,
+          fontFamily: 'Roboto',
+          inherit: true,
+        ),
         bodyMedium: TextStyle(
-            color: Colors.white,
-            fontSize: 16,
-            fontFamily: 'Roboto',
-            inherit: true),
+          color: Colors.white,
+          fontSize: 16,
+          fontFamily: 'Roboto',
+          inherit: true,
+        ),
         titleLarge: TextStyle(
-            color: Colors.white,
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'Roboto',
-            inherit: true),
+          color: Colors.white,
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+          fontFamily: 'Roboto',
+          inherit: true,
+        ),
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: Colors.deepPurple[700],
         hintStyle: const TextStyle(color: Colors.white70),
+        labelStyle:
+            const TextStyle(color: Colors.purpleAccent), // Added labelStyle
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15),
           borderSide: const BorderSide(color: Colors.white70),

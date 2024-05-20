@@ -25,6 +25,8 @@ class MapWidget extends StatelessWidget {
       myLocationButtonEnabled: false,
       tiltGesturesEnabled: false,
       compassEnabled: false,
+      mapToolbarEnabled: false,
+      mapType: MapType.normal,
     );
   }
 }

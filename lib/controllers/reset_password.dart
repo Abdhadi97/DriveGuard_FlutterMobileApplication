@@ -1,57 +1,86 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
+import 'input_validator.dart';
 
-class ResetPasswordPage extends StatelessWidget {
+class ResetPasswordPage extends StatefulWidget {
+  const ResetPasswordPage({Key? key}) : super(key: key);
+
+  @override
+  State<ResetPasswordPage> createState() => _ResetPasswordPageState();
+}
+
+class _ResetPasswordPageState extends State<ResetPasswordPage> {
   final TextEditingController emailController = TextEditingController();
-
-  ResetPasswordPage({Key? key}) : super(key: key);
+  final inputValidator = InputValidator();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 25.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const CircleAvatar(
                 radius: 70,
                 backgroundImage: AssetImage('lib/images/google.png'),
                 backgroundColor: Colors.white,
               ),
-              const SizedBox(height: 40),
+              const SizedBox(height: 30),
               const Text(
                 'Forget Password',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
-                textAlign: TextAlign.center,
+                textAlign: TextAlign.start,
               ),
-              const SizedBox(height: 10),
-              const Text(
-                'Fill your email in the space given below to reset your password',
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w100,
+              const SizedBox(height: 50),
+              const Padding(
+                padding: EdgeInsets.only(left: 10.0),
+                child: Text(
+                  'Fill your email in the space given below to reset your password',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w300,
+                  ),
+                  textAlign: TextAlign.start,
                 ),
-                textAlign: TextAlign.center,
               ),
               const SizedBox(height: 16),
-              TextField(
+              TextFormField(
                 controller: emailController,
+                keyboardType: TextInputType.emailAddress,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: inputValidator.validateEmail,
                 decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
                   labelText: 'Email',
+                  prefixIcon: Icon(Icons.email_outlined),
                 ),
               ),
               const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () {
-                  resetPassword(emailController.text.trim(), context);
-                },
-                child: const Text('Reset Password'),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    resetPassword(emailController.text.trim(), context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size.fromHeight(50),
+                  ),
+                  child: const Text(
+                    'RESET PASSWORD',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
@@ -61,39 +90,43 @@ class ResetPasswordPage extends StatelessWidget {
   }
 
   void resetPassword(String email, BuildContext context) async {
+    if (email.isEmpty) {
+      showErrorMessage(
+          context, "An unexpected error occurred. Email cannot be empty.");
+      return;
+    }
+
     showDialog(
       context: context,
-      builder: (context) => const Center(
-        child: CircularProgressIndicator(),
-      ),
+      builder: (context) => const Center(),
     );
 
     try {
       final emailRegExp = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
       if (!emailRegExp.hasMatch(email)) {
-        throw 'Invalid email format';
+        throw const FormatException(
+            'An unexpected error occurred. Invalid email format.');
       }
 
-      await FirebaseAuth.instance.sendPasswordResetEmail(
-        email: email,
-      );
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
 
-      // ignore: use_build_context_synchronously
       Navigator.pop(context);
 
       showSuccessMessage(
         context,
         "Password reset email sent. Check your inbox.",
       );
+    } on FirebaseAuthException catch (e) {
+      Navigator.pop(context);
+      final errorMessage = e.message ?? "An error occurred. Please try again.";
+      showErrorMessage(context, errorMessage);
+    } on FormatException catch (e) {
+      Navigator.pop(context);
+      showErrorMessage(context, e.message);
     } catch (e) {
       Navigator.pop(context);
-
-      final errorMessage = e is FirebaseAuthException
-          ? e.message ??
-              "Failed to send password reset email. Please try again."
-          : "Failed to send password reset email. Please try again.";
-
-      showErrorMessage(context, errorMessage);
+      showErrorMessage(
+          context, "An unexpected error occurred. Please try again.");
     }
   }
 
@@ -101,19 +134,32 @@ class ResetPasswordPage extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: Colors.deepPurple,
-        title: Center(
+        backgroundColor: Colors.white,
+        content: IntrinsicWidth(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
-                message,
-                style: const TextStyle(color: Colors.white),
+              Lottie.asset(
+                'lib/assets/success_animation.json',
+                width: 90,
+                height: 90,
+                fit: BoxFit.fill,
+                repeat: false,
               ),
-              const SizedBox(height: 10),
               const Text(
-                'Check your email for instructions on resetting your password.',
-                style: TextStyle(color: Colors.white),
+                'SUCCESS',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 15),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                child: Text(
+                  message,
+                  textAlign: TextAlign.center,
+                ),
               ),
             ],
           ),
@@ -126,11 +172,34 @@ class ResetPasswordPage extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: Colors.deepPurple,
-        title: Center(
-          child: Text(
-            message,
-            style: const TextStyle(color: Colors.white),
+        backgroundColor: Colors.white,
+        content: IntrinsicWidth(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Lottie.asset(
+                'lib/assets/error_animation.json',
+                width: 90,
+                height: 90,
+                fit: BoxFit.fill,
+                repeat: false,
+              ),
+              const Text(
+                'FAILED',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 15),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10.0),
+                child: Text(
+                  message,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
           ),
         ),
       ),
