@@ -28,7 +28,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
             children: [
               const CircleAvatar(
                 radius: 70,
-                backgroundImage: AssetImage('lib/images/google.png'),
+                backgroundImage: AssetImage('assets/images/google.png'),
                 backgroundColor: Colors.white,
               ),
               const SizedBox(height: 30),

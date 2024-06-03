@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:drive_guard/providers/user_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
