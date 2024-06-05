@@ -1,3 +1,4 @@
+import 'package:drive_guard/controllers/auth_session.dart';
 import 'package:drive_guard/screens/splash/splash_screen.dart';
 import 'package:drive_guard/theme.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
       title: 'DriveGuard',
       theme: AppTheme.lightTheme(context),
       // home: const SplashScreen1(),
-      initialRoute: SplashScreen1.routeName,
+      initialRoute: AuthSession.routeName,
       routes: routes,
     );
   }

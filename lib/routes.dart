@@ -1,3 +1,4 @@
+import 'package:drive_guard/controllers/auth_session.dart';
 import 'package:flutter/widgets.dart';
 import 'package:drive_guard/screens/products/products_screen.dart';
 
@@ -18,6 +19,7 @@ import 'screens/splash/splash_screen.dart';
 // All our routes will be available here
 final Map<String, WidgetBuilder> routes = {
   InitScreen.routeName: (context) => const InitScreen(),
+  AuthSession.routeName: (context) => const AuthSession(),
   SplashScreen1.routeName: (context) => const SplashScreen1(),
   SignInScreen.routeName: (context) => const SignInScreen(),
   ForgotPasswordScreen.routeName: (context) => const ForgotPasswordScreen(),

@@ -49,16 +49,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  SizedBox(
-                    height: screenHeight * 0.01,
-                  ),
                   const Text("Register Account", style: headingStyle),
                   SizedBox(height: screenHeight * 0.01),
                   const Text(
                     "Complete your details to create \nnew account",
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(height: screenHeight * 0.1),
+                  SizedBox(height: screenHeight * 0.04),
                   const SignUpForm(),
                   SizedBox(height: screenHeight * 0.02),
                   Text(

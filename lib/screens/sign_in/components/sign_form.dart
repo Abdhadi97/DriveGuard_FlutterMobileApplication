@@ -89,11 +89,16 @@ class _SignFormState extends State<SignForm> {
             keyboardType: TextInputType.emailAddress,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: inputValidator.validateEmail,
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               labelText: "Email",
               hintText: "Enter your email",
+              hintStyle: TextStyle(
+                fontSize: 14,
+                color: kSecondaryColor.withOpacity(0.5),
+              ),
               floatingLabelBehavior: FloatingLabelBehavior.always,
-              suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Mail.svg"),
+              suffixIcon:
+                  const CustomSurffixIcon(svgIcon: "assets/icons/Mail.svg"),
             ),
           ),
           const SizedBox(height: 20),
@@ -108,6 +113,10 @@ class _SignFormState extends State<SignForm> {
             decoration: InputDecoration(
               labelText: "Password",
               hintText: "Enter your password",
+              hintStyle: TextStyle(
+                fontSize: 14,
+                color: kSecondaryColor.withOpacity(0.5),
+              ),
               floatingLabelBehavior: FloatingLabelBehavior.always,
               suffixIcon: IconButton(
                 icon: Padding(

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../../components/custom_surfix_icon.dart';
+import '../../../constants.dart';
 import '../../../controllers/input_validator.dart';
 
 class ForgotPassForm extends StatefulWidget {
@@ -109,11 +110,16 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
             keyboardType: TextInputType.emailAddress,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: inputValidator.validateEmail,
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               labelText: "Email",
               hintText: "Enter your email",
+              hintStyle: TextStyle(
+                fontSize: 14,
+                color: kSecondaryColor.withOpacity(0.5),
+              ),
               floatingLabelBehavior: FloatingLabelBehavior.always,
-              suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Mail.svg"),
+              suffixIcon:
+                  const CustomSurffixIcon(svgIcon: "assets/icons/Mail.svg"),
             ),
           ),
           const SizedBox(height: 8),
