@@ -3,7 +3,6 @@ import 'package:drive_guard/controllers/input_validator.dart';
 import 'package:flutter/material.dart';
 
 import '../../../components/custom_surfix_icon.dart';
-import '../../../components/form_error.dart';
 import '../../../constants.dart';
 import '../../forgot_password/forgot_password_screen.dart';
 import '../../login_success/login_success_screen.dart';
@@ -23,28 +22,6 @@ class _SignFormState extends State<SignForm> {
   var inputValidator = InputValidator();
   bool _obsecureText = true;
   bool _isLoader = false;
-
-  String? email;
-  String? password;
-  bool? remember = false;
-
-  final List<String?> errors = [];
-
-  void addError({String? error}) {
-    if (!errors.contains(error)) {
-      setState(() {
-        errors.add(error);
-      });
-    }
-  }
-
-  void removeError({String? error}) {
-    if (errors.contains(error)) {
-      setState(() {
-        errors.remove(error);
-      });
-    }
-  }
 
   void _togglePasswordVisibility() {
     setState(() {
@@ -110,25 +87,8 @@ class _SignFormState extends State<SignForm> {
           TextFormField(
             controller: _emailController,
             keyboardType: TextInputType.emailAddress,
-            onSaved: (newValue) => email = newValue,
-            onChanged: (value) {
-              if (value.isNotEmpty) {
-                removeError(error: kEmailNullError);
-              } else if (emailValidatorRegExp.hasMatch(value)) {
-                removeError(error: kInvalidEmailError);
-              }
-              return;
-            },
-            validator: (value) {
-              if (value!.isEmpty) {
-                addError(error: kEmailNullError);
-                return "";
-              } else if (!emailValidatorRegExp.hasMatch(value)) {
-                addError(error: kInvalidEmailError);
-                return "";
-              }
-              return null;
-            },
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: inputValidator.validateEmail,
             decoration: const InputDecoration(
               labelText: "Email",
               hintText: "Enter your email",
@@ -143,25 +103,8 @@ class _SignFormState extends State<SignForm> {
             controller: _passwordController,
             obscureText: _obsecureText,
             keyboardType: TextInputType.visiblePassword,
-            onSaved: (newValue) => password = newValue,
-            onChanged: (value) {
-              if (value.isNotEmpty) {
-                removeError(error: kPassNullError);
-              } else if (value.length >= 6) {
-                removeError(error: kShortPassError);
-              }
-              return;
-            },
-            validator: (value) {
-              if (value!.isEmpty) {
-                addError(error: kPassNullError);
-                return "";
-              } else if (value.length < 6) {
-                addError(error: kShortPassError);
-                return "";
-              }
-              return null;
-            },
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: inputValidator.validatePassword,
             decoration: InputDecoration(
               labelText: "Password",
               hintText: "Enter your password",
@@ -181,32 +124,22 @@ class _SignFormState extends State<SignForm> {
             ),
           ),
 
-          //error message
-          FormError(errors: errors),
           const SizedBox(height: 20),
           Padding(
-            padding: const EdgeInsets.only(right: 15.0),
+            padding: const EdgeInsets.only(right: 10.0),
             child: Row(
               children: [
-                Checkbox(
-                  value: remember,
-                  activeColor: kPrimaryColor,
-                  onChanged: (value) {
-                    setState(() {
-                      remember = value;
-                    });
-                  },
-                ),
-                const Text("Remember me"),
-                const Spacer(),
+                Spacer(),
                 GestureDetector(
                   onTap: () => Navigator.pushNamed(
                       context, ForgotPasswordScreen.routeName),
                   child: const Text(
                     "Forgot Password",
-                    style: TextStyle(decoration: TextDecoration.underline),
+                    style: TextStyle(
+                      decoration: TextDecoration.underline,
+                    ),
                   ),
-                )
+                ),
               ],
             ),
           ),
@@ -224,17 +157,6 @@ class _SignFormState extends State<SignForm> {
                     "Sign In",
                   ),
           ),
-          // ElevatedButton(
-          //   onPressed: () {
-          //     if (_formKey.currentState!.validate()) {
-          //       _formKey.currentState!.save();
-          //       // if all are valid then go to success screen
-          //       KeyboardUtil.hideKeyboard(context);
-          //       Navigator.pushNamed(context, LoginSuccessScreen.routeName);
-          //     }
-          //   },
-          //   child: const Text("Sign In"),
-          // ),
         ],
       ),
     );

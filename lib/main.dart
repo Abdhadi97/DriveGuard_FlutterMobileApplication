@@ -9,7 +9,6 @@ import 'package:provider/provider.dart';
 import 'package:drive_guard/providers/user_provider.dart';
 
 import 'routes.dart';
-import 'theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

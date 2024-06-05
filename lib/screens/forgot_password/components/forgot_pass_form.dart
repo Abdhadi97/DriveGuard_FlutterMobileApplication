@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, avoid_print
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
@@ -9,6 +11,7 @@ class ForgotPassForm extends StatefulWidget {
   const ForgotPassForm({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _ForgotPassFormState createState() => _ForgotPassFormState();
 }
 
@@ -44,7 +47,6 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
       );
     } on FirebaseAuthException catch (e) {
       Navigator.pop(context);
-      final errorMessage = e.message ?? "An error occurred. Please try again.";
       print(e);
     } on FormatException catch (e) {
       Navigator.pop(context);
