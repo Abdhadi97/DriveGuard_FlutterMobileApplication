@@ -1,4 +1,3 @@
-// import 'package:drive_guard/components/splash_screen.dart';
 import 'package:drive_guard/screens/splash/splash_screen.dart';
 import 'package:drive_guard/theme.dart';
 import 'package:flutter/material.dart';
