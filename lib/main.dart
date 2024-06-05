@@ -1,10 +1,16 @@
-import 'package:drive_guard/components/app_theme.dart';
-import 'package:drive_guard/components/splash_screen.dart';
-import 'package:firebase_core/firebase_core.dart';
+// import 'package:drive_guard/components/splash_screen.dart';
+import 'package:drive_guard/screens/splash/splash_screen.dart';
+import 'package:drive_guard/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+
 import 'firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
+
 import 'package:drive_guard/providers/user_provider.dart';
+
+import 'routes.dart';
+import 'theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,9 +32,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      themeMode: ThemeMode.system,
-      theme: AppTheme.lightTheme(),
-      home: const SplashScreen(),
+      title: 'DriveGuard',
+      theme: AppTheme.lightTheme(context),
+      // home: const SplashScreen1(),
+      initialRoute: SplashScreen1.routeName,
+      routes: routes,
     );
   }
 }
