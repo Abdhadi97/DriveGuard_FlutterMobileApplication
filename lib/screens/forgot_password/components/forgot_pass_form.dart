@@ -1,9 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 import '../../../components/custom_surfix_icon.dart';
-import '../../../components/form_error.dart';
-import '../../../components/no_account_text.dart';
-import '../../../constants.dart';
+import '../../../controllers/input_validator.dart';
 
 class ForgotPassForm extends StatefulWidget {
   const ForgotPassForm({super.key});
@@ -14,65 +14,116 @@ class ForgotPassForm extends StatefulWidget {
 
 class _ForgotPassFormState extends State<ForgotPassForm> {
   final _formKey = GlobalKey<FormState>();
-  List<String> errors = [];
-  String? email;
+  final TextEditingController _emailController = TextEditingController();
+  final inputValidator = InputValidator();
+
+  void forgotPassword(String email, BuildContext context) async {
+    if (email.isEmpty) {
+      return;
+    }
+
+    showDialog(
+      context: context,
+      builder: (context) => const Center(),
+    );
+
+    try {
+      final emailRegExp = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+      if (!emailRegExp.hasMatch(email)) {
+        throw const FormatException(
+            'An unexpected error occurred. Invalid email format.');
+      }
+
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+
+      Navigator.pop(context);
+
+      showSuccessMessage(
+        context,
+        "Password reset email sent. Check your inbox.",
+      );
+    } on FirebaseAuthException catch (e) {
+      Navigator.pop(context);
+      final errorMessage = e.message ?? "An error occurred. Please try again.";
+      print(e);
+    } on FormatException catch (e) {
+      Navigator.pop(context);
+      print(e);
+    } catch (e) {
+      Navigator.pop(context);
+      print(e);
+    }
+  }
+
+  void showSuccessMessage(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: Colors.white,
+        content: IntrinsicWidth(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Lottie.asset(
+                'assets/animations/success_animation.json',
+                width: 90,
+                height: 90,
+                fit: BoxFit.fill,
+                repeat: true,
+              ),
+              const Text(
+                'SUCCESS',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 15),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                child: Text(
+                  message,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return Form(
       key: _formKey,
       child: Column(
         children: [
+          //email inputfield
           TextFormField(
+            controller: _emailController,
             keyboardType: TextInputType.emailAddress,
-            onSaved: (newValue) => email = newValue,
-            onChanged: (value) {
-              if (value.isNotEmpty && errors.contains(kEmailNullError)) {
-                setState(() {
-                  errors.remove(kEmailNullError);
-                });
-              } else if (emailValidatorRegExp.hasMatch(value) &&
-                  errors.contains(kInvalidEmailError)) {
-                setState(() {
-                  errors.remove(kInvalidEmailError);
-                });
-              }
-              return;
-            },
-            validator: (value) {
-              if (value!.isEmpty && !errors.contains(kEmailNullError)) {
-                setState(() {
-                  errors.add(kEmailNullError);
-                });
-              } else if (!emailValidatorRegExp.hasMatch(value) &&
-                  !errors.contains(kInvalidEmailError)) {
-                setState(() {
-                  errors.add(kInvalidEmailError);
-                });
-              }
-              return null;
-            },
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: inputValidator.validateEmail,
             decoration: const InputDecoration(
               labelText: "Email",
               hintText: "Enter your email",
-              // If  you are using latest version of flutter then lable text and hint text shown like this
-              // if you r using flutter less then 1.20.* then maybe this is not working properly
               floatingLabelBehavior: FloatingLabelBehavior.always,
               suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Mail.svg"),
             ),
           ),
           const SizedBox(height: 8),
-          FormError(errors: errors),
-          const SizedBox(height: 8),
+
+          const SizedBox(height: 10),
           ElevatedButton(
             onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                // Do what you want to do
-              }
+              forgotPassword(_emailController.text.trim(), context);
             },
-            child: const Text("Continue"),
+            child: const Text("Send Email"),
           ),
-          const SizedBox(height: 16),
-          const NoAccountText(),
+          SizedBox(height: screenHeight * 0.02),
         ],
       ),
     );

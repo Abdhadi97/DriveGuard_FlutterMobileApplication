@@ -215,20 +215,13 @@ class _SignFormState extends State<SignForm> {
           //sign in button
           ElevatedButton(
             onPressed: _isLoader ? null : _submitForm,
-            style: ElevatedButton.styleFrom(
-              minimumSize: const Size.fromHeight(50),
-            ),
             child: _isLoader
                 ? const Center(
                     child: CircularProgressIndicator(
                     color: kPrimaryColor,
                   ))
                 : const Text(
-                    "SIGN IN",
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w900,
-                    ),
+                    "Sign In",
                   ),
           ),
           // ElevatedButton(
