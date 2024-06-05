@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drive_guard/components/map_widget.dart';
 import 'package:drive_guard/pages/login_page.dart';
-import 'package:drive_guard/pages/profile_page.dart';
+import 'package:drive_guard/pages/profile_screen/profile_page.dart';
 import 'package:drive_guard/pages/workshop_list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
