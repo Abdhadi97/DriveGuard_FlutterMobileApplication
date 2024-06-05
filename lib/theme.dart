@@ -41,7 +41,7 @@ class AppTheme {
 }
 
 const OutlineInputBorder outlineInputBorder = OutlineInputBorder(
-  borderRadius: BorderRadius.all(Radius.circular(28)),
+  borderRadius: BorderRadius.all(Radius.circular(16)),
   borderSide: BorderSide(color: kTextColor),
   gapPadding: 10,
 );

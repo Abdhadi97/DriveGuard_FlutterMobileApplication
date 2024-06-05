@@ -67,8 +67,6 @@ class _SignFormState extends State<SignForm> {
             decoration: const InputDecoration(
               labelText: "Email",
               hintText: "Enter your email",
-              // If  you are using latest version of flutter then lable text and hint text shown like this
-              // if you r using flutter less then 1.20.* then maybe this is not working properly
               floatingLabelBehavior: FloatingLabelBehavior.always,
               suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Mail.svg"),
             ),
@@ -98,35 +96,36 @@ class _SignFormState extends State<SignForm> {
             decoration: const InputDecoration(
               labelText: "Password",
               hintText: "Enter your password",
-              // If  you are using latest version of flutter then lable text and hint text shown like this
-              // if you r using flutter less then 1.20.* then maybe this is not working properly
               floatingLabelBehavior: FloatingLabelBehavior.always,
               suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Lock.svg"),
             ),
           ),
           const SizedBox(height: 20),
-          Row(
-            children: [
-              Checkbox(
-                value: remember,
-                activeColor: kPrimaryColor,
-                onChanged: (value) {
-                  setState(() {
-                    remember = value;
-                  });
-                },
-              ),
-              const Text("Remember me"),
-              const Spacer(),
-              GestureDetector(
-                onTap: () => Navigator.pushNamed(
-                    context, ForgotPasswordScreen.routeName),
-                child: const Text(
-                  "Forgot Password",
-                  style: TextStyle(decoration: TextDecoration.underline),
+          Padding(
+            padding: const EdgeInsets.only(right: 15.0),
+            child: Row(
+              children: [
+                Checkbox(
+                  value: remember,
+                  activeColor: kPrimaryColor,
+                  onChanged: (value) {
+                    setState(() {
+                      remember = value;
+                    });
+                  },
                 ),
-              )
-            ],
+                const Text("Remember me"),
+                const Spacer(),
+                GestureDetector(
+                  onTap: () => Navigator.pushNamed(
+                      context, ForgotPasswordScreen.routeName),
+                  child: const Text(
+                    "Forgot Password",
+                    style: TextStyle(decoration: TextDecoration.underline),
+                  ),
+                )
+              ],
+            ),
           ),
           FormError(errors: errors),
           const SizedBox(height: 16),
@@ -139,7 +138,7 @@ class _SignFormState extends State<SignForm> {
                 Navigator.pushNamed(context, LoginSuccessScreen.routeName);
               }
             },
-            child: const Text("Continue"),
+            child: const Text("Sign In"),
           ),
         ],
       ),
