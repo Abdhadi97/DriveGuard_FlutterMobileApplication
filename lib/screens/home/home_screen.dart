@@ -1,15 +1,22 @@
+import 'package:drive_guard/screens/home/components/workshop_by_region.dart';
 import 'package:flutter/material.dart';
 
 import 'components/categories.dart';
-import 'components/discount_banner.dart';
+import 'components/user_location.dart';
 import 'components/home_header.dart';
 import 'components/popular_product.dart';
 import 'components/special_offers.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   static String routeName = "/home";
 
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
@@ -19,9 +26,9 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             children: [
               HomeHeader(),
-              DiscountBanner(),
+              UserLocation(),
               Categories(),
-              SpecialOffers(),
+              WorkshopByRegion(),
               SizedBox(height: 20),
               PopularProducts(),
               SizedBox(height: 20),

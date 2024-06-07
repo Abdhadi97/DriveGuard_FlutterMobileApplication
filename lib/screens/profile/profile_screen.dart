@@ -1,3 +1,4 @@
+import 'package:drive_guard/constants.dart';
 import 'package:drive_guard/screens/sign_in/sign_in_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -25,11 +26,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+  void _navigateToProfileUpdate(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const ProfileUpdate()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Profile"),
+        toolbarHeight: kToolbarHeight + screenHeight * 0.03,
+        title: const Text(
+          'PROFILE',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: kSecondaryColor,
+          ),
+        ),
+        automaticallyImplyLeading: false,
+        leadingWidth: 80,
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(vertical: 20),
@@ -40,7 +62,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ProfileMenu(
               text: "My Account",
               icon: "assets/icons/User Icon.svg",
-              press: () => {},
+              press: () {
+                _navigateToProfileUpdate(context);
+              },
             ),
             ProfileMenu(
               text: "Notifications",
@@ -64,6 +88,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class ProfileUpdate extends StatelessWidget {
+  const ProfileUpdate({Key? key}) : super(key: key);
+
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Profile Update"),
+      ),
+      body: const Center(
+        child: Text("Profile Update Page"),
       ),
     );
   }

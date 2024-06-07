@@ -41,8 +41,9 @@ class _InitScreenState extends State<InitScreen> {
       bottomNavigationBar: BottomNavigationBar(
         onTap: updateCurrentIndex,
         currentIndex: currentSelectedIndex,
-        showSelectedLabels: false,
+        showSelectedLabels: true,
         showUnselectedLabels: false,
+        selectedItemColor: kPrimaryColor,
         type: BottomNavigationBarType.fixed,
         items: [
           BottomNavigationBarItem(
@@ -60,24 +61,24 @@ class _InitScreenState extends State<InitScreen> {
                 BlendMode.srcIn,
               ),
             ),
-            label: "Home",
+            label: 'Home',
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
-              "assets/icons/Heart Icon.svg",
+              "assets/icons/Location point.svg",
               colorFilter: const ColorFilter.mode(
                 inActiveIconColor,
                 BlendMode.srcIn,
               ),
             ),
             activeIcon: SvgPicture.asset(
-              "assets/icons/Heart Icon.svg",
+              "assets/icons/Location point.svg",
               colorFilter: const ColorFilter.mode(
                 kPrimaryColor,
                 BlendMode.srcIn,
               ),
             ),
-            label: "Fav",
+            label: "Location",
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
@@ -94,7 +95,7 @@ class _InitScreenState extends State<InitScreen> {
                 BlendMode.srcIn,
               ),
             ),
-            label: "Chat",
+            label: "Workshop",
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
@@ -111,7 +112,7 @@ class _InitScreenState extends State<InitScreen> {
                 BlendMode.srcIn,
               ),
             ),
-            label: "Fav",
+            label: "Profile",
           ),
         ],
       ),

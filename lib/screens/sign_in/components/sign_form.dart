@@ -47,7 +47,7 @@ class _SignFormState extends State<SignForm> {
             Navigator.pushReplacement(
               context,
               PageRouteBuilder(
-                transitionDuration: const Duration(milliseconds: 200),
+                transitionDuration: const Duration(milliseconds: 500),
                 pageBuilder: (_, __, ___) => const LoginSuccessScreen(),
                 transitionsBuilder: (_, animation, __, child) {
                   const begin = Offset(0.0, 1.0);

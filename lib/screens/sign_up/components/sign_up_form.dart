@@ -55,7 +55,7 @@ class _SignUpFormState extends State<SignUpForm> {
       //create user with data in input field
       await _authService.createUser(data, context, () {
         // Delay navigation to home page
-        Future.delayed(const Duration(seconds: 1), () {
+        Future.delayed(const Duration(seconds: 2), () {
           setState(() {
             Navigator.pushNamed(context, InitScreen.routeName);
           });

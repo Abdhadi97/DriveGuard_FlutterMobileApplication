@@ -32,7 +32,7 @@ class LoginSuccessScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, InitScreen.routeName);
+                Navigator.pushReplacementNamed(context, InitScreen.routeName);
               },
               child: const Text("Back to home"),
             ),

@@ -1,3 +1,4 @@
+import 'package:drive_guard/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -65,7 +66,31 @@ class _LocationTestState extends State<LocationTest> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'Google Map',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: kSecondaryColor,
+          ),
+        ),
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: const Icon(
+            Icons.arrow_back_ios,
+            color: kSecondaryColor,
+          ),
+        ),
+        leadingWidth: 80,
+        centerTitle: true,
+      ),
       body: Column(
         children: [
           Expanded(
@@ -75,28 +100,12 @@ class _LocationTestState extends State<LocationTest> {
                 target: LatLng(4.2105, 101.9758),
                 zoom: 7,
               ),
+              myLocationButtonEnabled: false,
               markers: _markers,
               onMapCreated: (GoogleMapController controller) {
                 _mapController = controller;
               },
             ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Flexible(
-                child: ElevatedButton(
-                  onPressed: _getUserLocation,
-                  child: const Text("User Location"),
-                ),
-              ),
-              Flexible(
-                child: ElevatedButton(
-                  onPressed: _getWorkshopLocationsFromDatabase,
-                  child: const Text("Workshop Locations"),
-                ),
-              ),
-            ],
           ),
         ],
       ),
