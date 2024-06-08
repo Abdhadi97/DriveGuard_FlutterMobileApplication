@@ -1,5 +1,4 @@
 import 'package:drive_guard/controllers/auth_session.dart';
-import 'package:drive_guard/screens/splash/splash_screen.dart';
 import 'package:drive_guard/theme.dart';
 import 'package:flutter/material.dart';
 
@@ -16,6 +15,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   runApp(
     ChangeNotifierProvider(
       create: (context) => UserProvider(),
@@ -33,7 +33,6 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'DriveGuard',
       theme: AppTheme.lightTheme(context),
-      // home: const SplashScreen1(),
       initialRoute: AuthSession.routeName,
       routes: routes,
     );

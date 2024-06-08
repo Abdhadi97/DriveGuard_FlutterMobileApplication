@@ -7,6 +7,8 @@ class UserModel {
   String? email;
   String? phoneNum;
   String? imageUrl;
+  String? curAddress;
+  GeoPoint? curLoc;
 
   UserModel({
     this.uid,
@@ -15,16 +17,33 @@ class UserModel {
     this.email,
     this.phoneNum,
     this.imageUrl,
+    this.curAddress,
+    this.curLoc,
   });
 
   factory UserModel.fromDocumentSnapshot(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>;
     return UserModel(
       uid: doc.id,
-      firstName: doc['firstname'],
-      lastName: doc['lastname'],
-      email: doc['email'],
-      phoneNum: doc['phoneNum'],
-      imageUrl: doc['imageurl'],
+      firstName: data['firstname'] as String?,
+      lastName: data['lastname'] as String?,
+      email: data['email'] as String?,
+      phoneNum: data['phoneNum'] as String?,
+      imageUrl: data['imageurl'] as String?,
+      curAddress: data['current address'] as String?,
+      curLoc: data['current location'] as GeoPoint,
     );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'firstname': firstName,
+      'lastname': lastName,
+      'email': email,
+      'phoneNum': phoneNum,
+      'imageurl': imageUrl,
+      'current address': curAddress,
+      'current location': curLoc,
+    };
   }
 }

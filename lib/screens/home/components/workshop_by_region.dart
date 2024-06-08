@@ -13,6 +13,7 @@ class WorkshopByRegion extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
     return Column(
       children: [
+        SizedBox(height: screenHeight * 0.02),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: SectionTitle(

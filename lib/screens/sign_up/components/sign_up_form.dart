@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drive_guard/screens/init_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -28,16 +29,16 @@ class _SignUpFormState extends State<SignUpForm> {
   final AuthService _authService = AuthService();
   final InputValidator _inputValidator = InputValidator();
 
-  //create user
+  // Create user
   Future<void> _submitForm(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
-      // Check if passwords not match, not proceed
+      // Check if passwords match
       if (_passwordController.text != _confirmPasswordController.text) {
         _showSnackBar(context, 'PASSWORD DOES NOT MATCH !!');
         return;
       }
 
-      //if match, proceed
+      // Proceed if passwords match
       setState(() {
         _isLoader = true;
       });
@@ -49,15 +50,17 @@ class _SignUpFormState extends State<SignUpForm> {
         "phoneNum": _phoneController.text,
         "password": _passwordController.text,
         'imageurl':
-            'https://firebasestorage.googleapis.com/v0/b/driveguard-c4915.appspot.com/o/defaultProfile.jpg?alt=media&token=89120c75-b0c6-47ad-acf5-e10eb6e542c7'
+            'https://firebasestorage.googleapis.com/v0/b/driveguard-c4915.appspot.com/o/defaultProfile.jpg?alt=media&token=89120c75-b0c6-47ad-acf5-e10eb6e542c7',
+        "current address": "",
+        "current location": const GeoPoint(0.0, 0.0),
       };
 
-      //create user with data in input field
+      // Create user with data from input fields
       await _authService.createUser(data, context, () {
         // Delay navigation to home page
         Future.delayed(const Duration(seconds: 2), () {
           setState(() {
-            Navigator.pushNamed(context, InitScreen.routeName);
+            Navigator.pushReplacementNamed(context, InitScreen.routeName);
           });
         });
       });
@@ -68,7 +71,7 @@ class _SignUpFormState extends State<SignUpForm> {
     }
   }
 
-  //register error message
+  // Register error message
   void _showSnackBar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -86,7 +89,7 @@ class _SignUpFormState extends State<SignUpForm> {
     );
   }
 
-  //toggle visibility both password
+  // Toggle visibility of password fields
   void _togglePasswordVisibility() {
     setState(() {
       _obsecureText = !_obsecureText;
@@ -105,8 +108,7 @@ class _SignUpFormState extends State<SignUpForm> {
       key: _formKey,
       child: Column(
         children: [
-          //fullname input field
-          //firstname, lastname
+          // First name input field
           TextFormField(
             controller: _fNameController,
             keyboardType: TextInputType.name,
@@ -125,6 +127,7 @@ class _SignUpFormState extends State<SignUpForm> {
             ),
           ),
           const SizedBox(height: 20),
+          // Last name input field
           TextFormField(
             controller: _lNameController,
             keyboardType: TextInputType.name,
@@ -132,7 +135,7 @@ class _SignUpFormState extends State<SignUpForm> {
             validator: _inputValidator.validateLastName,
             decoration: InputDecoration(
               labelText: "Last Name",
-              hintText: "Enter your first name",
+              hintText: "Enter your last name",
               hintStyle: TextStyle(
                 fontSize: 14,
                 color: kSecondaryColor.withOpacity(0.5),
@@ -143,7 +146,7 @@ class _SignUpFormState extends State<SignUpForm> {
             ),
           ),
           const SizedBox(height: 20),
-          //email inputfield
+          // Email input field
           TextFormField(
             controller: _emailController,
             keyboardType: TextInputType.emailAddress,
@@ -162,7 +165,7 @@ class _SignUpFormState extends State<SignUpForm> {
             ),
           ),
           const SizedBox(height: 20),
-          //phone number inputfield
+          // Phone number input field
           TextFormField(
             controller: _phoneController,
             keyboardType: TextInputType.phone,
@@ -181,8 +184,7 @@ class _SignUpFormState extends State<SignUpForm> {
             ),
           ),
           const SizedBox(height: 20),
-          //password inputfield
-          //both
+          // Password input field
           TextFormField(
             controller: _passwordController,
             obscureText: _obsecureText,
@@ -212,10 +214,11 @@ class _SignUpFormState extends State<SignUpForm> {
             ),
           ),
           const SizedBox(height: 20),
+          // Confirm password input field
           TextFormField(
             controller: _confirmPasswordController,
             obscureText: _obsecureText1,
-            keyboardType: TextInputType.emailAddress,
+            keyboardType: TextInputType.visiblePassword,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: _inputValidator.validatePassword,
             decoration: InputDecoration(
@@ -241,6 +244,7 @@ class _SignUpFormState extends State<SignUpForm> {
             ),
           ),
           const SizedBox(height: 20),
+          // Register button
           ElevatedButton(
             onPressed: () => _submitForm(context),
             child: _isLoader

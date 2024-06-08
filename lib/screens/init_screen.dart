@@ -28,10 +28,8 @@ class _InitScreenState extends State<InitScreen> {
   final pages = [
     const HomeScreen(),
     const FavoriteScreen(),
-    const Center(
-      child: Text("Chat"),
-    ),
-    const ProfileScreen()
+    const Center(child: Text('Chat')),
+    ProfileScreen()
   ];
 
   @override
@@ -48,14 +46,14 @@ class _InitScreenState extends State<InitScreen> {
         items: [
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
-              "assets/icons/Shop Icon.svg",
+              "assets/icons/cloud-rain.svg",
               colorFilter: const ColorFilter.mode(
                 inActiveIconColor,
                 BlendMode.srcIn,
               ),
             ),
             activeIcon: SvgPicture.asset(
-              "assets/icons/Shop Icon.svg",
+              "assets/icons/cloud-rain.svg",
               colorFilter: const ColorFilter.mode(
                 kPrimaryColor,
                 BlendMode.srcIn,

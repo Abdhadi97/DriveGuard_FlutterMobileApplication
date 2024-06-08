@@ -1,46 +1,21 @@
-import 'package:drive_guard/constants.dart';
-import 'package:drive_guard/screens/sign_in/sign_in_screen.dart';
+import 'package:drive_guard/screens/splash/splash_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
+import 'package:drive_guard/constants.dart';
+import 'package:drive_guard/screens/sign_in/sign_in_screen.dart';
+import 'package:drive_guard/providers/user_provider.dart';
 import 'components/profile_menu.dart';
 import 'components/profile_pic.dart';
 
-class ProfileScreen extends StatefulWidget {
+class ProfileScreen extends StatelessWidget {
   static String routeName = "/profile";
-
-  const ProfileScreen({super.key});
-
-  @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
-}
-
-class _ProfileScreenState extends State<ProfileScreen> {
-  void signUserOut() {
-    FirebaseAuth.instance.signOut();
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const SignInScreen(),
-      ),
-    );
-  }
-
-  void _navigateToProfileUpdate(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const ProfileUpdate()),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
-
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: kToolbarHeight + screenHeight * 0.03,
         title: const Text(
           'PROFILE',
           style: TextStyle(
@@ -49,8 +24,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
             color: kSecondaryColor,
           ),
         ),
-        automaticallyImplyLeading: false,
-        leadingWidth: 80,
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -63,7 +36,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
               text: "My Account",
               icon: "assets/icons/User Icon.svg",
               press: () {
-                _navigateToProfileUpdate(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const ProfileUpdate()),
+                );
               },
             ),
             ProfileMenu(
@@ -77,14 +54,53 @@ class _ProfileScreenState extends State<ProfileScreen> {
               press: () {},
             ),
             ProfileMenu(
-              text: "Help Center",
+              text: "Account Deletion",
               icon: "assets/icons/Question mark.svg",
-              press: () {},
+              press: () async {
+                final userProvider =
+                    Provider.of<UserProvider>(context, listen: false);
+                bool confirmDelete = await showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text("Confirm Account Deletion"),
+                    content: const Text(
+                        "Are you sure you want to delete your account? This action cannot be undone."),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(false),
+                        child: const Text("Cancel"),
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(true),
+                        child: const Text("Delete"),
+                      ),
+                    ],
+                  ),
+                );
+
+                if (confirmDelete == true) {
+                  await userProvider.deleteUser();
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SignInScreen(),
+                    ),
+                  );
+                }
+              },
             ),
             ProfileMenu(
               text: "Log Out",
               icon: "assets/icons/Log out.svg",
-              press: signUserOut,
+              press: () {
+                userProvider.signOut();
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SignInScreen(),
+                  ),
+                );
+              },
             ),
           ],
         ),
@@ -96,6 +112,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 class ProfileUpdate extends StatelessWidget {
   const ProfileUpdate({Key? key}) : super(key: key);
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(

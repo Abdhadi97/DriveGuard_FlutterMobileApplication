@@ -1,4 +1,5 @@
 import 'package:drive_guard/constants.dart';
+import 'package:drive_guard/screens/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../components/no_account_text.dart';
@@ -25,7 +26,7 @@ class SignInScreen extends StatelessWidget {
         ),
         leading: GestureDetector(
           onTap: () {
-            Navigator.pop(context);
+            Navigator.pushReplacementNamed(context, SplashScreen1.routeName);
           },
           child: const Icon(
             Icons.arrow_back_ios,

@@ -1,3 +1,4 @@
+import 'package:drive_guard/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -21,41 +22,46 @@ class _HomeHeaderState extends State<HomeHeader> {
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return Consumer<UserProvider>(
       builder: (context, userProvider, child) {
         final user = userProvider.user;
 
-        return Padding(
-          padding: const EdgeInsets.only(left: 25.0, right: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              if (user != null) ...[
-                Expanded(
-                  child: Text(
-                    'Hello, ${user.firstName} ${user.lastName}',
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 1,
+        return Container(
+          height: screenHeight * 0.08,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 25.0, right: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                if (user != null) ...[
+                  Expanded(
+                    child: Text(
+                      'Hello, ${user.firstName} ${user.lastName}',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1,
+                      ),
                     ),
                   ),
-                ),
-                IconBtnWithCounter(
-                  svgSrc: "assets/icons/Bell.svg",
-                  numOfitem: 3,
-                  press: () {},
-                ),
-                const SizedBox(width: 8),
-                CircleAvatar(
-                  backgroundImage: user.imageUrl != null
-                      ? NetworkImage(user.imageUrl!)
-                      : const AssetImage('assets/default_avatar.png')
-                          as ImageProvider,
-                  radius: 20, // Adjust the radius as per your need
-                ),
+                  IconBtnWithCounter(
+                    svgSrc: "assets/icons/Bell.svg",
+                    numOfitem: 3,
+                    press: () {},
+                  ),
+                  const SizedBox(width: 8),
+                  CircleAvatar(
+                    backgroundImage: user.imageUrl != null
+                        ? NetworkImage(user.imageUrl!)
+                        : const AssetImage('assets/default_avatar.png')
+                            as ImageProvider,
+                    radius: 20, // Adjust the radius as per your need
+                  ),
+                ],
               ],
-            ],
+            ),
           ),
         );
       },

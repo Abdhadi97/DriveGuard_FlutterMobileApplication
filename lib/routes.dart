@@ -1,4 +1,5 @@
 import 'package:drive_guard/controllers/auth_session.dart';
+import 'package:drive_guard/screens/map/open_map.dart';
 import 'package:flutter/widgets.dart';
 import 'package:drive_guard/screens/products/products_screen.dart';
 
@@ -31,5 +32,6 @@ final Map<String, WidgetBuilder> routes = {
   ProductsScreen.routeName: (context) => const ProductsScreen(),
   DetailsScreen.routeName: (context) => const DetailsScreen(),
   CartScreen.routeName: (context) => const CartScreen(),
-  ProfileScreen.routeName: (context) => const ProfileScreen(),
+  ProfileScreen.routeName: (context) => ProfileScreen(),
+  OpenMapScreen.routeName: (context) => const OpenMapScreen(),
 };
