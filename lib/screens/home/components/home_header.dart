@@ -1,5 +1,7 @@
 import 'package:drive_guard/constants.dart';
+import 'package:drive_guard/screens/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 import '../../../providers/user_provider.dart';
@@ -52,12 +54,17 @@ class _HomeHeaderState extends State<HomeHeader> {
                     press: () {},
                   ),
                   const SizedBox(width: 8),
-                  CircleAvatar(
-                    backgroundImage: user.imageUrl != null
-                        ? NetworkImage(user.imageUrl!)
-                        : const AssetImage('assets/default_avatar.png')
-                            as ImageProvider,
-                    radius: 20, // Adjust the radius as per your need
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, ProfileScreen.routeName);
+                    },
+                    child: CircleAvatar(
+                      backgroundImage: user.imageUrl != null
+                          ? NetworkImage(user.imageUrl!)
+                          : const AssetImage('assets/default_avatar.png')
+                              as ImageProvider,
+                      radius: 20, // Adjust the radius as per your need
+                    ),
                   ),
                 ],
               ],

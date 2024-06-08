@@ -33,7 +33,7 @@ class _OpenMapScreenState extends State<OpenMapScreen> {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: const Text(
-          'Google Map Extension',
+          'Find a Workshop',
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
@@ -57,7 +57,7 @@ class _OpenMapScreenState extends State<OpenMapScreen> {
       body: Center(
         child: Consumer<UserProvider>(
           builder: (context, userProvider, child) {
-            if (userProvider.user?.curLoc == null) {
+            if (userProvider.user == null) {
               return const Center(child: CircularProgressIndicator());
             }
 

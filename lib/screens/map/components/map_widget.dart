@@ -1,7 +1,7 @@
-import 'package:drive_guard/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:drive_guard/providers/user_provider.dart';
 
 class MapWidget extends StatefulWidget {
   final Set<Marker> markers;
@@ -18,63 +18,118 @@ class MapWidget extends StatefulWidget {
 }
 
 class _MapWidgetState extends State<MapWidget> {
-  double _radius = 500; // Initial radius in meters
+  double _radius = 0.5; // Initial radius in kilometers
+  final List<double> _radiusOptions = [
+    0.5,
+    1.0,
+    1.5,
+    2.0,
+    2.5,
+    3.0,
+    3.5,
+    4.0,
+    4.5,
+    5.0
+  ]; // Radius options in kilometers
 
   @override
   Widget build(BuildContext context) {
-    final userProvider = Provider.of<UserProvider>(context);
+    double screenHeight = MediaQuery.of(context).size.height;
 
-    if (userProvider.user == null) {
-      return const Center(child: CircularProgressIndicator());
-    }
+    return Consumer<UserProvider>(
+      builder: (context, userProvider, child) {
+        if (userProvider.user == null) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
-    return Column(
-      children: [
-        Expanded(
-          child: GoogleMap(
-            initialCameraPosition: CameraPosition(
-              target: LatLng(
-                userProvider.user!.curLoc!.latitude,
-                userProvider.user!.curLoc!.longitude,
+        LatLng userLocation = LatLng(
+          userProvider.user!.curLoc!.latitude,
+          userProvider.user!.curLoc!.longitude,
+        );
+
+        return Column(
+          children: [
+            Expanded(
+              child: Stack(
+                children: [
+                  GoogleMap(
+                    initialCameraPosition: CameraPosition(
+                      target: userLocation,
+                      zoom: 15,
+                    ),
+                    circles: {
+                      Circle(
+                        circleId: const CircleId("User"),
+                        center: userLocation,
+                        radius: _radius * 1000, // Convert radius to meters
+                        strokeWidth: 1,
+                        strokeColor: Colors.grey,
+                        fillColor: const Color(0xFF006491).withOpacity(0.2),
+                      ),
+                    },
+                    markers: widget.markers,
+                    onMapCreated: (controller) =>
+                        widget.onMapCreated(controller),
+                    zoomControlsEnabled: false,
+                    myLocationEnabled: true,
+                    myLocationButtonEnabled: false,
+                    tiltGesturesEnabled: false,
+                    compassEnabled: false,
+                    mapToolbarEnabled: false,
+                  ),
+                  Positioned(
+                    bottom: 20,
+                    right: 10,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 6,
+                            offset: Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: DropdownButton<double>(
+                        value: _radius,
+                        onChanged: (double? newValue) {
+                          setState(() {
+                            _radius = newValue!;
+                          });
+                        },
+                        items: _radiusOptions
+                            .map<DropdownMenuItem<double>>((double value) {
+                          return DropdownMenuItem<double>(
+                            value: value,
+                            child: Text('${value.toStringAsFixed(1)} km'),
+                          );
+                        }).toList(),
+                        underline: Container(),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              zoom: 15,
             ),
-            circles: {
-              Circle(
-                circleId: const CircleId("User"),
-                center: LatLng(
-                  userProvider.user!.curLoc!.latitude,
-                  userProvider.user!.curLoc!.longitude,
-                ),
-                radius: _radius,
-                strokeWidth: 1,
-                strokeColor: Colors.grey,
-                fillColor: const Color(0xFF006491).withOpacity(0.2),
+            SizedBox(
+              height: screenHeight * 0.4,
+              child: const Column(
+                children: [
+                  Text(
+                    'Nearby',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
               ),
-            },
-            markers: widget.markers,
-            onMapCreated: (controller) => widget.onMapCreated(controller),
-            zoomControlsEnabled: true,
-            myLocationEnabled: true,
-            myLocationButtonEnabled: false,
-            tiltGesturesEnabled: false,
-            compassEnabled: false,
-            mapToolbarEnabled: false,
-          ),
-        ),
-        Slider(
-          value: _radius,
-          min: 100,
-          max: 1000,
-          divisions: 9,
-          label: 'Radius: ${_radius.toStringAsFixed(0)} meters',
-          onChanged: (value) {
-            setState(() {
-              _radius = value;
-            });
-          },
-        ),
-      ],
+            ),
+          ],
+        );
+      },
     );
   }
 }

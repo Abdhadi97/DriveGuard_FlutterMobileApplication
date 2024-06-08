@@ -1,8 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drive_guard/screens/map/components/map_widget.dart';
-import 'package:drive_guard/pages/login_page.dart';
 import 'package:drive_guard/pages/profile_screen/profile_page.dart';
-import 'package:drive_guard/pages/workshop_list.dart';
+import 'package:drive_guard/screens/workshop_list/workshop_list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -56,7 +55,7 @@ class _HomePageState extends State<HomePage> {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => const LoginPage(),
+        builder: (context) => const Scaffold(),
       ),
     );
   }
