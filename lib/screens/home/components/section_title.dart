@@ -4,10 +4,12 @@ class SectionTitle extends StatelessWidget {
   const SectionTitle({
     Key? key,
     required this.title,
+    required this.buttonText,
     required this.press,
   }) : super(key: key);
 
   final String title;
+  final String buttonText;
   final GestureTapCallback press;
 
   @override
@@ -26,7 +28,7 @@ class SectionTitle extends StatelessWidget {
         TextButton(
           onPressed: press,
           style: TextButton.styleFrom(foregroundColor: Colors.grey),
-          child: const Text("See more"),
+          child: Text(buttonText),
         ),
       ],
     );

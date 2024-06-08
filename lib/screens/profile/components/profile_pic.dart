@@ -32,8 +32,8 @@ class _ProfilePicState extends State<ProfilePic> {
       builder: (context, userProvider, child) {
         final user = userProvider.user;
         return SizedBox(
-          height: 120,
-          width: 120,
+          height: 130,
+          width: 130,
           child: Stack(
             fit: StackFit.expand,
             clipBehavior: Clip.none,
@@ -44,11 +44,11 @@ class _ProfilePicState extends State<ProfilePic> {
                     : NetworkImage(user!.imageUrl!) as ImageProvider,
               ),
               Positioned(
-                right: -16,
+                right: -5,
                 bottom: 0,
                 child: SizedBox(
-                  height: 46,
-                  width: 46,
+                  height: 40,
+                  width: 40,
                   child: TextButton(
                     style: TextButton.styleFrom(
                       foregroundColor: Colors.white,

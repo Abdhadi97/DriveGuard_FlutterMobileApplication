@@ -1,52 +1,31 @@
+import 'package:drive_guard/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../providers/workshop_provider.dart';
 
-class WorkshopList extends StatefulWidget {
+class WorkshopList extends StatelessWidget {
   const WorkshopList({Key? key}) : super(key: key);
 
   @override
-  State<WorkshopList> createState() => _WorkshopListState();
-}
-
-class _WorkshopListState extends State<WorkshopList> {
-  late Future<List<DocumentSnapshot>> _workshopsFuture;
-
-  @override
-  void initState() {
-    super.initState();
-    _workshopsFuture = _fetchWorkshops();
-  }
-
-  Future<List<DocumentSnapshot>> _fetchWorkshops() async {
-    QuerySnapshot snapshot =
-        await FirebaseFirestore.instance.collection('workshops').get();
-    return snapshot.docs;
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final workshopProvider =
+        Provider.of<WorkshopProvider>(context, listen: false);
+
     return Scaffold(
       appBar: AppBar(
-        leading: GestureDetector(
-          child: const Icon(
-            Icons.arrow_back_ios_new,
-            color: Colors.white,
-          ),
-          onTap: () {
-            Navigator.pop(context);
-          },
-        ),
         title: const Text(
           'Workshop List',
           style: TextStyle(
-            color: Colors.white,
+            fontSize: 16,
             fontWeight: FontWeight.bold,
+            color: kSecondaryColor,
           ),
         ),
-        backgroundColor: Colors.teal,
+        centerTitle: true,
       ),
-      body: FutureBuilder<List<DocumentSnapshot>>(
-        future: _workshopsFuture,
+      body: FutureBuilder(
+        future: workshopProvider.fetchWorkshops(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
@@ -57,7 +36,7 @@ class _WorkshopListState extends State<WorkshopList> {
               child: Text('Error: ${snapshot.error}'),
             );
           } else {
-            List<DocumentSnapshot> workshops = snapshot.data!;
+            List<DocumentSnapshot> workshops = workshopProvider.workshops;
             return ListView.builder(
               itemCount: workshops.length,
               itemBuilder: (context, index) {
@@ -67,12 +46,18 @@ class _WorkshopListState extends State<WorkshopList> {
                 String longitude = location.longitude.toString();
                 String locationString =
                     'Latitude: $latitude, Longitude: $longitude';
+                String imageUrl =
+                    workshop['imageUrl'] ?? ''; // Retrieve imageUrl
 
                 return Card(
                   margin: const EdgeInsets.all(8),
                   child: ListTile(
                     title: Text(workshop['name']),
                     subtitle: Text(locationString),
+                    leading: imageUrl.isNotEmpty
+                        ? Image.network(
+                            imageUrl) // Load image if imageUrl is available
+                        : const SizedBox(), // Use SizedBox if no imageUrl
                     // Add more details if needed
                   ),
                 );

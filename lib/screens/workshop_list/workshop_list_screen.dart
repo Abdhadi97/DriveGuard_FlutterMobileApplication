@@ -31,7 +31,8 @@ class WorkshopListScreen extends StatelessWidget {
                 return ListView.builder(
                   itemCount: workshopProvider.workshops.length,
                   itemBuilder: (context, index) {
-                    Workshop workshop = workshopProvider.workshops[index];
+                    Workshop workshop =
+                        workshopProvider.workshops[index] as Workshop;
                     return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: WorkshopCard(

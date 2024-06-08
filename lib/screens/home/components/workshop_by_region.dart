@@ -19,6 +19,7 @@ class WorkshopByRegion extends StatelessWidget {
           child: SectionTitle(
             title: "Available Workshop",
             press: () {},
+            buttonText: 'See All',
           ),
         ),
         SizedBox(

@@ -103,28 +103,32 @@ class _UserLocationState extends State<UserLocation> {
               child: SectionTitle(
                 title: "Current Location",
                 press: () {
-                  Navigator.pushNamed(context, OpenMapScreen.routeName);
+                  _getCurrentLocation();
                 },
+                buttonText: 'Refresh',
               ),
             ),
-            GestureDetector(
-              onTap: _getCurrentLocation,
-              child: Container(
-                width: double.infinity,
-                margin: const EdgeInsets.symmetric(horizontal: 20),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF4A3298),
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Text(
-                  userProvider.user?.curAddress ?? _currentAddress,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+            Container(
+              width: double.infinity,
+              margin: const EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                image: DecorationImage(
+                  image: AssetImage("assets/images/map_userLoc.jpeg"),
+                  fit: BoxFit.cover,
+                  colorFilter: ColorFilter.mode(
+                    Colors.black
+                        .withOpacity(0.5), // Adjust opacity here (0.0 to 1.0)
+                    BlendMode.darken,
                   ),
+                ),
+              ),
+              child: Text(
+                userProvider.user?.curAddress ?? _currentAddress,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
                 ),
               ),
             ),

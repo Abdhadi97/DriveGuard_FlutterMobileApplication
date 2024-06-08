@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Workshop {
   final String name;
-
   final GeoPoint location;
   final String imageUrl;
 

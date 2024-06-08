@@ -1,4 +1,3 @@
-import 'package:drive_guard/constants.dart';
 import 'package:drive_guard/screens/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -30,7 +29,7 @@ class _HomeHeaderState extends State<HomeHeader> {
       builder: (context, userProvider, child) {
         final user = userProvider.user;
 
-        return Container(
+        return SizedBox(
           height: screenHeight * 0.08,
           child: Padding(
             padding: const EdgeInsets.only(left: 25.0, right: 20),

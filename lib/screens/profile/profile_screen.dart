@@ -1,39 +1,119 @@
-import 'package:drive_guard/screens/splash/splash_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:drive_guard/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:drive_guard/constants.dart';
-import 'package:drive_guard/screens/sign_in/sign_in_screen.dart';
-import 'package:drive_guard/providers/user_provider.dart';
+import '../../providers/user_provider.dart';
+import '../init_screen.dart';
+import '../sign_in/sign_in_screen.dart';
 import 'components/profile_menu.dart';
 import 'components/profile_pic.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   static String routeName = "/profile";
 
   @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
+
     final userProvider = Provider.of<UserProvider>(context, listen: false);
+    userProvider.fetchUserData();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'PROFILE',
+          'My Account',
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
             color: kSecondaryColor,
           ),
         ),
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.pushReplacementNamed(context, InitScreen.routeName);
+          },
+          child: const Icon(
+            Icons.arrow_back_ios,
+            color: kSecondaryColor,
+          ),
+        ),
+        leadingWidth: 80,
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(vertical: 20),
+        padding: EdgeInsets.symmetric(
+            vertical: screenWidth * 0.05, horizontal: screenHeight * 0.005),
         child: Column(
           children: [
             const ProfilePic(),
-            const SizedBox(height: 20),
+            SizedBox(height: screenHeight * 0.02),
+            Consumer<UserProvider>(
+              builder: (context, userProvider, _) {
+                if (userProvider.user != null) {
+                  return Column(
+                    children: [
+                      Text(
+                        '${userProvider.user!.firstName} ${userProvider.user!.lastName}',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: kSecondaryColor,
+                          fontSize: 16,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: screenHeight * 0.03),
+                        child: Divider(
+                          thickness: 2,
+                          color: kSecondaryColor.withOpacity(0.5),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: screenHeight * 0.03),
+                        child: Row(
+                          children: [
+                            const Spacer(),
+                            const Icon(
+                              Icons.mail_outlined,
+                              color: kSecondaryColor,
+                            ),
+                            Text(
+                              ' ${userProvider.user?.email}',
+                              style: const TextStyle(
+                                  fontStyle: FontStyle.italic,
+                                  color: kSecondaryColor),
+                            ),
+                            const Spacer(),
+                            const Icon(
+                              Icons.phone_outlined,
+                              color: kSecondaryColor,
+                            ),
+                            Text(
+                              ' ${userProvider.user?.phoneNum}',
+                              style: const TextStyle(
+                                  fontStyle: FontStyle.italic,
+                                  color: kSecondaryColor),
+                            ),
+                            const Spacer(),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: screenHeight * 0.03),
+                    ],
+                  );
+                } else {
+                  return const CircularProgressIndicator();
+                }
+              },
+            ),
             ProfileMenu(
-              text: "My Account",
+              text: "My Detail",
               icon: "assets/icons/User Icon.svg",
               press: () {
                 Navigator.push(
@@ -44,18 +124,13 @@ class ProfileScreen extends StatelessWidget {
               },
             ),
             ProfileMenu(
-              text: "Notifications",
-              icon: "assets/icons/Bell.svg",
-              press: () {},
-            ),
-            ProfileMenu(
-              text: "Settings",
-              icon: "assets/icons/Settings.svg",
+              text: "User Guide",
+              icon: "assets/icons/book-svgrepo-com.svg",
               press: () {},
             ),
             ProfileMenu(
               text: "Account Deletion",
-              icon: "assets/icons/Question mark.svg",
+              icon: "assets/icons/delete-forever.svg",
               press: () async {
                 final userProvider =
                     Provider.of<UserProvider>(context, listen: false);
@@ -105,6 +180,30 @@ class ProfileScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class UserInfoSection extends StatelessWidget {
+  const UserInfoSection({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
+
+    return Column(
+      children: [
+        if (userProvider.user != null)
+          Text(
+            '${userProvider.user!.firstName} ${userProvider.user!.lastName}',
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
+          ),
+        const SizedBox(height: 10),
+        // Add other user information widgets here
+      ],
     );
   }
 }

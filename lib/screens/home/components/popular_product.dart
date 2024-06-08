@@ -20,6 +20,7 @@ class PopularProducts extends StatelessWidget {
             press: () {
               Navigator.pushNamed(context, ProductsScreen.routeName);
             },
+            buttonText: 'See More',
           ),
         ),
         SingleChildScrollView(
