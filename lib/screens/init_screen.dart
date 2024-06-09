@@ -1,4 +1,4 @@
-import 'package:drive_guard/screens/workshop_list/workshop_list.dart';
+import 'package:drive_guard/screens/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:drive_guard/constants.dart';
@@ -26,7 +26,7 @@ class _InitScreenState extends State<InitScreen> {
 
   dynamic pages = [
     const HomeScreen(),
-    const WorkshopList(),
+    ProfileScreen(),
   ];
 
   @override
@@ -60,20 +60,20 @@ class _InitScreenState extends State<InitScreen> {
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
-              "assets/icons/cloud-rain.svg",
+              "assets/icons/User Icon.svg",
               colorFilter: const ColorFilter.mode(
                 inActiveIconColor,
                 BlendMode.srcIn,
               ),
             ),
             activeIcon: SvgPicture.asset(
-              "assets/icons/cloud-rain.svg",
+              "assets/icons/User Icon.svg",
               colorFilter: const ColorFilter.mode(
                 kPrimaryColor,
                 BlendMode.srcIn,
               ),
             ),
-            label: "Location",
+            label: "Profile",
           ),
         ],
       ),

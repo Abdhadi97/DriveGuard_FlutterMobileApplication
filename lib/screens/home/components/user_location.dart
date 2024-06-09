@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:drive_guard/screens/map/open_map.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
@@ -15,8 +14,6 @@ class UserLocation extends StatefulWidget {
 }
 
 class _UserLocationState extends State<UserLocation> {
-  String _currentAddress = "Tap to fetch location";
-
   @override
   void initState() {
     super.initState();
@@ -25,21 +22,8 @@ class _UserLocationState extends State<UserLocation> {
 
   Future<void> _loadStoredLocation() async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
-    // Check if user data is already loaded
     if (userProvider.user != null) {
-      setState(() {
-        _currentAddress =
-            userProvider.user?.curAddress ?? "Tap to fetch location";
-      });
-    } else {
-      setState(() {
-        _currentAddress = "Loading...";
-      });
-      await userProvider.fetchUserData();
-      setState(() {
-        _currentAddress =
-            userProvider.user?.curAddress ?? "Tap to fetch location";
-      });
+      setState(() {});
     }
   }
 
@@ -47,14 +31,14 @@ class _UserLocationState extends State<UserLocation> {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
 
     setState(() {
-      _currentAddress = "Fetching location...";
+      userProvider.user?.curAddress = "Fetching location...";
     });
 
     // Test if location services are enabled.
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       setState(() {
-        _currentAddress = "Location services are disabled.";
+        userProvider.user?.curAddress = "Location services are disabled.";
       });
       return;
     }
@@ -64,7 +48,7 @@ class _UserLocationState extends State<UserLocation> {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
         setState(() {
-          _currentAddress = "Location permissions are denied";
+          userProvider.user?.curAddress = "Location permissions are denied";
         });
         return;
       }
@@ -72,7 +56,7 @@ class _UserLocationState extends State<UserLocation> {
 
     if (permission == LocationPermission.deniedForever) {
       setState(() {
-        _currentAddress =
+        userProvider.user?.curAddress =
             "Location permissions are permanently denied, we cannot request permissions.";
       });
       return;
@@ -87,7 +71,7 @@ class _UserLocationState extends State<UserLocation> {
     } catch (e) {
       print('Error getting location: $e');
       setState(() {
-        _currentAddress = "Error getting location.";
+        userProvider.user?.curAddress = "Error getting location.";
       });
     }
   }
@@ -108,27 +92,32 @@ class _UserLocationState extends State<UserLocation> {
                 buttonText: 'Refresh',
               ),
             ),
-            Container(
-              width: double.infinity,
-              margin: const EdgeInsets.symmetric(horizontal: 20),
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                image: DecorationImage(
-                  image: AssetImage("assets/images/map_userLoc.jpeg"),
-                  fit: BoxFit.cover,
-                  colorFilter: ColorFilter.mode(
-                    Colors.black
-                        .withOpacity(0.5), // Adjust opacity here (0.0 to 1.0)
-                    BlendMode.darken,
+            GestureDetector(
+              onTap: () {
+                _getCurrentLocation();
+              },
+              child: Container(
+                width: double.infinity,
+                margin: const EdgeInsets.symmetric(horizontal: 20),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  image: DecorationImage(
+                    image: AssetImage("assets/images/map_userLoc.jpeg"),
+                    fit: BoxFit.cover,
+                    colorFilter: ColorFilter.mode(
+                      Colors.black.withOpacity(0.5),
+                      BlendMode.darken,
+                    ),
                   ),
                 ),
-              ),
-              child: Text(
-                userProvider.user?.curAddress ?? _currentAddress,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
+                child: Text(
+                  userProvider.user?.curAddress ?? "Tap to fetch location",
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                  ),
                 ),
               ),
             ),

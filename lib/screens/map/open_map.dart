@@ -37,7 +37,7 @@ class _OpenMapScreenState extends State<OpenMapScreen> {
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
-            color: kSecondaryColor,
+            color: Colors.black,
           ),
         ),
         leading: GestureDetector(
@@ -46,7 +46,7 @@ class _OpenMapScreenState extends State<OpenMapScreen> {
           },
           child: const Icon(
             Icons.arrow_back_ios,
-            color: kSecondaryColor,
+            color: Colors.black,
           ),
         ),
         leadingWidth: 80,

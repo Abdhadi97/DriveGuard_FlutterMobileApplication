@@ -20,7 +20,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: kToolbarHeight + screenHeight * 0.03,
         title: const Text(
           'Sign Up',
           style: TextStyle(

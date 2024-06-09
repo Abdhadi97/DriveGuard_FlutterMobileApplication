@@ -1,4 +1,5 @@
 import 'package:drive_guard/constants.dart';
+import 'package:drive_guard/screens/complete_profile/complete_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/user_provider.dart';
@@ -50,7 +51,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             vertical: screenWidth * 0.05, horizontal: screenHeight * 0.005),
         child: Column(
           children: [
-            const ProfilePic(),
+            ProfilePic(),
             SizedBox(height: screenHeight * 0.02),
             Consumer<UserProvider>(
               builder: (context, userProvider, _) {
@@ -58,10 +59,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   return Column(
                     children: [
                       Text(
-                        '${userProvider.user!.firstName} ${userProvider.user!.lastName}',
+                        '${userProvider.user!.firstName} ${userProvider.user!.lastName}'
+                            .toUpperCase(),
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: kSecondaryColor,
+                          color: Colors.black,
                           fontSize: 16,
                         ),
                       ),
@@ -70,39 +72,40 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             horizontal: screenHeight * 0.03),
                         child: Divider(
                           thickness: 2,
-                          color: kSecondaryColor.withOpacity(0.5),
+                          color: Colors.black.withOpacity(0.5),
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: screenHeight * 0.03),
-                        child: Row(
-                          children: [
-                            const Spacer(),
-                            const Icon(
-                              Icons.mail_outlined,
-                              color: kSecondaryColor,
-                            ),
-                            Text(
-                              ' ${userProvider.user?.email}',
-                              style: const TextStyle(
-                                  fontStyle: FontStyle.italic,
-                                  color: kSecondaryColor),
-                            ),
-                            const Spacer(),
-                            const Icon(
-                              Icons.phone_outlined,
-                              color: kSecondaryColor,
-                            ),
-                            Text(
-                              ' ${userProvider.user?.phoneNum}',
-                              style: const TextStyle(
-                                  fontStyle: FontStyle.italic,
-                                  color: kSecondaryColor),
-                            ),
-                            const Spacer(),
-                          ],
-                        ),
+                      Row(
+                        children: [
+                          const Spacer(),
+                          const Icon(
+                            Icons.mail_outlined,
+                            color: kSecondaryColor,
+                          ),
+                          Text(
+                            ' ${userProvider.user?.email}',
+                            style: const TextStyle(
+                                fontStyle: FontStyle.italic,
+                                color: kSecondaryColor),
+                          ),
+                          const Spacer(),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          const Spacer(),
+                          const Icon(
+                            Icons.phone_outlined,
+                            color: kSecondaryColor,
+                          ),
+                          Text(
+                            ' ${userProvider.user?.phoneNum}',
+                            style: const TextStyle(
+                                fontStyle: FontStyle.italic,
+                                color: kSecondaryColor),
+                          ),
+                          const Spacer(),
+                        ],
                       ),
                       SizedBox(height: screenHeight * 0.03),
                     ],
@@ -113,13 +116,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
               },
             ),
             ProfileMenu(
-              text: "My Detail",
+              text: "Edit Detail",
               icon: "assets/icons/User Icon.svg",
               press: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const ProfileUpdate()),
+                      builder: (context) => const CompleteProfileScreen()),
                 );
               },
             ),

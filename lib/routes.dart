@@ -10,11 +10,11 @@ import 'screens/forgot_password/forgot_password_screen.dart';
 import 'screens/home/home_screen.dart';
 import 'screens/init_screen.dart';
 import 'screens/login_success/login_success_screen.dart';
-import 'screens/otp/otp_screen.dart';
 import 'screens/profile/profile_screen.dart';
 import 'screens/sign_in/sign_in_screen.dart';
 import 'screens/sign_up/sign_up_screen.dart';
 import 'screens/splash/splash_screen.dart';
+import 'screens/workshop/workshop_detail_screen.dart';
 
 // We use name route
 // All our routes will be available here
@@ -27,11 +27,11 @@ final Map<String, WidgetBuilder> routes = {
   LoginSuccessScreen.routeName: (context) => const LoginSuccessScreen(),
   SignUpScreen.routeName: (context) => const SignUpScreen(),
   CompleteProfileScreen.routeName: (context) => const CompleteProfileScreen(),
-  OtpScreen.routeName: (context) => const OtpScreen(),
   HomeScreen.routeName: (context) => const HomeScreen(),
   ProductsScreen.routeName: (context) => const ProductsScreen(),
   DetailsScreen.routeName: (context) => const DetailsScreen(),
   CartScreen.routeName: (context) => const CartScreen(),
   ProfileScreen.routeName: (context) => ProfileScreen(),
   OpenMapScreen.routeName: (context) => const OpenMapScreen(),
+  WorkshopDetailScreen.routeName: (context) => WorkshopDetailScreen(),
 };

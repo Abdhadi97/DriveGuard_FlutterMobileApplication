@@ -1,4 +1,6 @@
+import 'package:drive_guard/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:drive_guard/providers/user_provider.dart';
@@ -109,19 +111,6 @@ class _MapWidgetState extends State<MapWidget> {
                         }).toList(),
                         underline: Container(),
                       ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: screenHeight * 0.4,
-              child: const Column(
-                children: [
-                  Text(
-                    'Nearby',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ],

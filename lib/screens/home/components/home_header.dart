@@ -48,7 +48,7 @@ class _HomeHeaderState extends State<HomeHeader> {
                     ),
                   ),
                   IconBtnWithCounter(
-                    svgSrc: "assets/icons/Bell.svg",
+                    svgSrc: "assets/icons/Conversation.svg",
                     numOfitem: 3,
                     press: () {},
                   ),

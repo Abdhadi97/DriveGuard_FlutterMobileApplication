@@ -13,17 +13,21 @@ class UserProvider with ChangeNotifier {
   UserModel? get user => _user;
 
   Future<void> fetchUserData() async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      final docSnapshot = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(user.uid)
-          .get();
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        final docSnapshot = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .get();
 
-      if (docSnapshot.exists) {
-        _user = UserModel.fromDocumentSnapshot(docSnapshot);
-        notifyListeners();
+        if (docSnapshot.exists) {
+          _user = UserModel.fromDocumentSnapshot(docSnapshot);
+          notifyListeners();
+        }
       }
+    } catch (e) {
+      print('Error fetching user data: $e');
     }
   }
 
@@ -44,33 +48,37 @@ class UserProvider with ChangeNotifier {
           .doc(user.uid)
           .update({'imageurl': imageUrl});
 
-      _user?.imageUrl = imageUrl;
+      _user?.imageUrl = imageUrl; // Update imageUrl in UserModel
       notifyListeners();
     }
   }
 
   Future<void> updateUserLocation(Position position) async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      final geoPoint = GeoPoint(position.latitude, position.longitude);
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(user.uid)
-          .update({
-        'current location': geoPoint,
-      });
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        final geoPoint = GeoPoint(position.latitude, position.longitude);
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .update({
+          'current location': geoPoint,
+        });
 
-      _user?.curLoc = geoPoint;
-      notifyListeners();
-      updateUserAddress(geoPoint);
+        _user?.curLoc = geoPoint;
+        notifyListeners();
+        updateUserAddress(geoPoint);
+      }
+    } catch (e) {
+      print('Error updating user location: $e');
     }
   }
 
   Future<void> updateUserAddress(GeoPoint geoPoint) async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      try {
-        List<Placemark> placemarks = await placemarkFromCoordinates(
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        final List<Placemark> placemarks = await placemarkFromCoordinates(
             geoPoint.latitude, geoPoint.longitude);
 
         if (placemarks.isNotEmpty) {
@@ -88,36 +96,31 @@ class UserProvider with ChangeNotifier {
           _user?.curAddress = address;
           notifyListeners();
         }
-      } catch (e) {
-        print('Error updating address: $e');
       }
+    } catch (e) {
+      print('Error updating user address: $e');
     }
-  }
-
-  void setCurrentAddress(String address) {
-    _user?.curAddress = address;
-    notifyListeners();
-  }
-
-  void clearUser() {
-    _user = null;
-    notifyListeners();
   }
 
   void signOut() {
     FirebaseAuth.instance.signOut();
-    clearUser();
+    _user = null;
+    notifyListeners();
   }
 
   Future<void> deleteUser() async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(user.uid)
-          .delete();
-      await user.delete();
-      signOut();
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .delete();
+        await user.delete();
+        signOut();
+      }
+    } catch (e) {
+      print('Error deleting user: $e');
     }
   }
 }

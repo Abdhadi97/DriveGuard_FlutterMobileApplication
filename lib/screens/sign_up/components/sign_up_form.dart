@@ -51,14 +51,14 @@ class _SignUpFormState extends State<SignUpForm> {
         "password": _passwordController.text,
         'imageurl':
             'https://firebasestorage.googleapis.com/v0/b/driveguard-c4915.appspot.com/o/defaultProfile.jpg?alt=media&token=89120c75-b0c6-47ad-acf5-e10eb6e542c7',
-        "current address": "",
+        "current address": "Tap to fetch location",
         "current location": const GeoPoint(0.0, 0.0),
       };
 
       // Create user with data from input fields
       await _authService.createUser(data, context, () {
         // Delay navigation to home page
-        Future.delayed(const Duration(seconds: 2), () {
+        Future.delayed(const Duration(seconds: 1), () {
           setState(() {
             Navigator.pushReplacementNamed(context, InitScreen.routeName);
           });
@@ -109,41 +109,49 @@ class _SignUpFormState extends State<SignUpForm> {
       child: Column(
         children: [
           // First name input field
-          TextFormField(
-            controller: _fNameController,
-            keyboardType: TextInputType.name,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            validator: _inputValidator.validateFirstName,
-            decoration: InputDecoration(
-              labelText: "First Name",
-              hintText: "Enter your first name",
-              hintStyle: TextStyle(
-                fontSize: 14,
-                color: kSecondaryColor.withOpacity(0.5),
+          Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 4.0),
+                  child: TextFormField(
+                    controller: _fNameController,
+                    keyboardType: TextInputType.name,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: _inputValidator.validateFirstName,
+                    decoration: InputDecoration(
+                      labelText: "First Name",
+                      hintText: "Enter your first name",
+                      hintStyle: TextStyle(
+                        fontSize: 14,
+                        color: kSecondaryColor.withOpacity(0.5),
+                      ),
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                    ),
+                  ),
+                ),
               ),
-              floatingLabelBehavior: FloatingLabelBehavior.always,
-              suffixIcon:
-                  const CustomSurffixIcon(svgIcon: "assets/icons/User.svg"),
-            ),
-          ),
-          const SizedBox(height: 20),
-          // Last name input field
-          TextFormField(
-            controller: _lNameController,
-            keyboardType: TextInputType.name,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            validator: _inputValidator.validateLastName,
-            decoration: InputDecoration(
-              labelText: "Last Name",
-              hintText: "Enter your last name",
-              hintStyle: TextStyle(
-                fontSize: 14,
-                color: kSecondaryColor.withOpacity(0.5),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 4.0),
+                  child: TextFormField(
+                    controller: _lNameController,
+                    keyboardType: TextInputType.name,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: _inputValidator.validateLastName,
+                    decoration: InputDecoration(
+                      labelText: "Last Name",
+                      hintText: "Enter your last name",
+                      hintStyle: TextStyle(
+                        fontSize: 14,
+                        color: kSecondaryColor.withOpacity(0.5),
+                      ),
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                    ),
+                  ),
+                ),
               ),
-              floatingLabelBehavior: FloatingLabelBehavior.always,
-              suffixIcon:
-                  const CustomSurffixIcon(svgIcon: "assets/icons/User.svg"),
-            ),
+            ],
           ),
           const SizedBox(height: 20),
           // Email input field
