@@ -31,6 +31,29 @@ class UserProvider with ChangeNotifier {
     }
   }
 
+  Future<void> updateUserProfile(
+      String firstName, String lastName, String phoneNum) async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      // Update profile in Firestore
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .update({
+        'firstname': firstName,
+        'lastname': lastName,
+        'phoneNum': phoneNum,
+      });
+
+      // Update the local user model
+      _user?.firstName = firstName;
+      _user?.lastName = lastName;
+      _user?.phoneNum = phoneNum;
+
+      notifyListeners();
+    }
+  }
+
   Future<void> updateUserProfileImage(File imageFile) async {
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {

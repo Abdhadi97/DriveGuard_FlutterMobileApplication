@@ -5,6 +5,7 @@ class UserModel {
   String? firstName;
   String? lastName;
   String? email;
+  String? pass;
   String? phoneNum;
   String? imageUrl;
   String? curAddress;
@@ -15,6 +16,7 @@ class UserModel {
     this.firstName,
     this.lastName,
     this.email,
+    this.pass,
     this.phoneNum,
     this.imageUrl,
     this.curAddress,
@@ -28,6 +30,7 @@ class UserModel {
       firstName: data['firstname'] as String?,
       lastName: data['lastname'] as String?,
       email: data['email'] as String?,
+      pass: data['password'] as String?,
       phoneNum: data['phoneNum'] as String?,
       imageUrl: data['imageurl'] as String?,
       curAddress: data['current address'] as String?,
@@ -40,6 +43,7 @@ class UserModel {
       'firstname': firstName,
       'lastname': lastName,
       'email': email,
+      'password': pass,
       'phoneNum': phoneNum,
       'imageurl': imageUrl,
       'current address': curAddress,

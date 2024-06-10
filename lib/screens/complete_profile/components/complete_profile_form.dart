@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../components/custom_surfix_icon.dart';
-import '../../../components/form_error.dart';
 import '../../../constants.dart';
 
 class CompleteProfileForm extends StatefulWidget {
@@ -129,7 +128,6 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
                   CustomSurffixIcon(svgIcon: "assets/icons/Location point.svg"),
             ),
           ),
-          FormError(errors: errors),
           const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {

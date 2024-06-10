@@ -1,9 +1,8 @@
 import 'package:drive_guard/providers/user_provider.dart';
+import 'package:drive_guard/providers/workshop_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:drive_guard/constants.dart';
-
 import 'components/map_widget.dart';
 
 class OpenMapScreen extends StatefulWidget {
@@ -22,6 +21,7 @@ class _OpenMapScreenState extends State<OpenMapScreen> {
   void initState() {
     super.initState();
     Provider.of<UserProvider>(context, listen: false).fetchUserData();
+    Provider.of<WorkshopProvider>(context, listen: false).fetchWorkshops();
   }
 
   @override
@@ -33,11 +33,11 @@ class _OpenMapScreenState extends State<OpenMapScreen> {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: const Text(
-          'Find a Workshop',
+          'Find Nearest Workshop',
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
-            color: Colors.black,
+            color: Colors.white,
           ),
         ),
         leading: GestureDetector(
@@ -46,13 +46,12 @@ class _OpenMapScreenState extends State<OpenMapScreen> {
           },
           child: const Icon(
             Icons.arrow_back_ios,
-            color: Colors.black,
+            color: Colors.white,
           ),
         ),
         leadingWidth: 80,
         centerTitle: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
+        backgroundColor: Colors.black.withOpacity(0.5),
       ),
       body: Center(
         child: Consumer<UserProvider>(
