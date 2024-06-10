@@ -1,10 +1,11 @@
-import 'package:drive_guard/pages/home_page.dart';
-import 'package:drive_guard/pages/login_page.dart';
+import 'package:drive_guard/screens/init_screen.dart';
+import 'package:drive_guard/screens/splash/splash_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class AuthSession extends StatelessWidget {
   const AuthSession({super.key});
+  static String routeName = "/auth_session";
 
   @override
   Widget build(BuildContext context) {
@@ -13,11 +14,11 @@ class AuthSession extends StatelessWidget {
         builder: (context, snapshot) {
           //user logged in
           if (snapshot.hasData) {
-            return const HomePage();
+            return const InitScreen();
           }
           //user NOT logged in
           else {
-            return const LoginPage();
+            return const SplashScreen1();
           }
         });
   }

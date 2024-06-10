@@ -1,19 +1,26 @@
-import 'package:drive_guard/components/app_theme.dart';
-import 'package:drive_guard/components/splash_screen.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:drive_guard/providers/workshop_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:drive_guard/controllers/auth_session.dart';
+import 'package:drive_guard/theme.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
-import 'package:drive_guard/providers/user_provider.dart';
+import 'providers/user_provider.dart';
+
+import 'routes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => UserProvider(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => WorkshopProvider()),
+      ],
       child: const MyApp(),
     ),
   );
@@ -26,9 +33,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      themeMode: ThemeMode.system,
-      theme: AppTheme.lightTheme(),
-      home: const SplashScreen(),
+      title: 'DriveGuard',
+      theme: AppTheme.lightTheme(context),
+      initialRoute: AuthSession.routeName,
+      routes: routes,
     );
   }
 }
