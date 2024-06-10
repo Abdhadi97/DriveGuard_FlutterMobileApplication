@@ -80,19 +80,29 @@ class _UpdateProfileFormState extends State<UpdateProfileForm> {
     );
   }
 
-  void _submitForm(BuildContext context) {
+  void _submitForm(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
       // Save changes
       final updatedData = {
-        'firstname': _firstNameController.text.trim(),
-        'lastname': _lastNameController.text.trim(),
+        'firstName': _firstNameController.text.trim(),
+        'lastName': _lastNameController.text.trim(),
         'phoneNum': _phoneNumController.text.trim(),
       };
 
-      // Show success dialog
-      showSuccessMessage(context, "Profile details updated successfully");
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+      try {
+        await userProvider.updateUserProfile(
+          updatedData['firstName']!,
+          updatedData['lastName']!,
+          updatedData['phoneNum']!,
+        );
 
-      // Automatically dismiss dialog after 1 seconds
+        // Show success dialog
+        showSuccessMessage(context, "Profile details updated successfully");
+      } catch (e) {
+        // Handle errors, for example show a snackbar or dialog
+        print('Error updating profile: $e');
+      }
     }
   }
 

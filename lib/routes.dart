@@ -1,9 +1,6 @@
 import 'package:drive_guard/controllers/auth_session.dart';
 import 'package:drive_guard/screens/map/open_map.dart';
 import 'package:flutter/widgets.dart';
-import 'screens/cart/cart_screen.dart';
-import 'screens/complete_profile/complete_profile_screen.dart';
-import 'screens/details/details_screen.dart';
 import 'screens/forgot_password/forgot_password_screen.dart';
 import 'screens/home/home_screen.dart';
 import 'screens/init_screen.dart';
@@ -24,10 +21,7 @@ final Map<String, WidgetBuilder> routes = {
   ForgotPasswordScreen.routeName: (context) => const ForgotPasswordScreen(),
   LoginSuccessScreen.routeName: (context) => const LoginSuccessScreen(),
   SignUpScreen.routeName: (context) => const SignUpScreen(),
-  CompleteProfileScreen.routeName: (context) => const CompleteProfileScreen(),
   HomeScreen.routeName: (context) => const HomeScreen(),
-  DetailsScreen.routeName: (context) => const DetailsScreen(),
-  CartScreen.routeName: (context) => const CartScreen(),
   ProfileScreen.routeName: (context) => ProfileScreen(),
   OpenMapScreen.routeName: (context) => const OpenMapScreen(),
   WorkshopDetailScreen.routeName: (context) => WorkshopDetailScreen(),
